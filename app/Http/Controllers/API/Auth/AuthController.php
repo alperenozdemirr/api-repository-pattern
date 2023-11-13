@@ -9,7 +9,6 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-;
 
 class AuthController extends Controller
 {
@@ -21,9 +20,6 @@ class AuthController extends Controller
             'email' => $request['email'],
             'password' => bcrypt($request['password'])
         ]);
-        $response = [
-            'user' => $user
-        ];
         return response(['message'=>'user create successfully.','users'=>UserResource::make($user)], 201);
     }
 
@@ -37,7 +33,7 @@ class AuthController extends Controller
             return response(['message' => 'Invalid credentials'], 401);
         }
         //create token
-        $token = $user->createToken('token')->plainTextToken;
+        $token = $user->createToken('user-token')->plainTextToken;
         //set token and user info
         return response(['message'=>'user create successfully.','users'=>UserResource::make($user),'token'=>$token], 201);
     }

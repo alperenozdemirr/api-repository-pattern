@@ -20,7 +20,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
-Route::group(['middleware' => ['auth:sanctum']],function (){
+Route::group(['middleware' => ['auth:sanctum','user']],function (){
     Route::get('test',function (){
         return response()->json(['message' => 'test success'],201);
     });
