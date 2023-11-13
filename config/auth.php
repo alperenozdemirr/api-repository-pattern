@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'sanctum', // Bu satırın 'sanctum' olarak ayarlanmış olması önemlidir
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*

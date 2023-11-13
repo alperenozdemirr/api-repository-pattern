@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\Status;
+use App\Enums\UserType;
 
 return new class extends Migration
 {
@@ -17,6 +19,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('phone')->nullable();
+            $table->string('image')->nullable();
+            $table->enum('status',Status::toValues())->default(Status::ACTIVE);
+            $table->enum('type',UserType::toValues())->default(UserType::USER);
             $table->rememberToken();
             $table->timestamps();
         });
