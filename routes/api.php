@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\User\Account\AddressController;
+use App\Http\Controllers\API\User\Product\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,4 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
     //logged out
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+Route::resource('products',ProductController::class);
