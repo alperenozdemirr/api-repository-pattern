@@ -18,7 +18,7 @@ class BaseRepository implements RepositoryInterface
      */
     public function get($id)
     {
-        return $this->model->get($id);
+        return $this->model->find($id);
     }
 
     /**
@@ -45,7 +45,9 @@ class BaseRepository implements RepositoryInterface
      */
     public function update($id, array $data)
     {
-        return $this->model->update($id, $data);
+        $item = $this->model->find($id);
+        $item->update($data);
+        return $item;
     }
 
     /**
@@ -73,7 +75,7 @@ class BaseRepository implements RepositoryInterface
      */
     public function filter($column, $condition)
     {
-        return $this->model->where($column, $condition);
+        return $this->model->where($column, $condition)->get();
     }
 }
 ?>

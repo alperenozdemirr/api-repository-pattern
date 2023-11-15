@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\User\Account\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +21,16 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
-Route::group(['middleware' => ['auth:sanctum','user']],function (){
+Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],function (){
+    //test route
     Route::get('test',function (){
         return response()->json(['message' => 'test success'],201);
     });
+    //accounts
+    Route::prefix('account')->group(function (){
+        Route::resource('address',AddressController::class);
+    });
 
+    //logged out
     Route::post('/logout', [AuthController::class, 'logout']);
 });
