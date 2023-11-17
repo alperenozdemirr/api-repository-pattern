@@ -26,7 +26,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],function (){
     //test route
     Route::get('test',function (){
-        return response()->json(['message' => 'test success'],201);
+        return response()->json(['message' => 'user test success'],201);
     });
     //accounts
     Route::prefix('account')->group(function (){
@@ -35,6 +35,12 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
 
     //logged out
     Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','admin']],function (){
+    Route::get('admin/test',function (){
+       return response()->json(['message' => 'admin test success']);
+    });
 });
 Route::resource('products',ProductController::class);
 Route::resource('categories',CategoryController::class);

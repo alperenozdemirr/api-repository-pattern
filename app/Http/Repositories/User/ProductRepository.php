@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Repositories\User;
 
+use App\Http\Repositories\BaseRepository;
 use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 
 class ProductRepository extends BaseRepository
 {

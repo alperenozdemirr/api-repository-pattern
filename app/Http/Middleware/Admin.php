@@ -20,6 +20,6 @@ class Admin
         if ($request->user() && $request->user()->type == UserType::ADMIN && $request->user()->status == Status::ACTIVE) {
             return $next($request);
         }
-        return response()->json(['error' => 'Unauthorized action.'], 403);
+        return response()->json(['error' => 'Unauthorized action or you do not have administrator rights.'], 403);
     }
 }

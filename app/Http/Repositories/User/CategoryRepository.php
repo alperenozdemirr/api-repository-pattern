@@ -1,9 +1,8 @@
 <?php
 namespace App\Http\Repositories\User;
 
+use App\Http\Repositories\BaseRepository;
 use App\Models\Category;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CategoryRepository extends BaseRepository
