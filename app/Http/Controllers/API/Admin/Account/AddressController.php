@@ -1,23 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\API\User\Account;
+namespace App\Http\Controllers\API\Admin\Account;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\AddressRepository;
-use App\Http\Requests\User\AddressRequest;
 use App\Http\Resources\Public\AddressResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
 {
-    /**
-     * @var AddressRepository
-     */
     private $repository = null;
-
-    /**
-     * @param AddressRepository $repository
-     */
     public function __construct(AddressRepository $repository)
     {
         $this->repository = $repository;
@@ -37,20 +30,6 @@ class AddressController extends Controller
     }
 
     /**
-     * @param AddressRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(AddressRequest $request)
-    {
-        $items =  $this->repository->create($request->safe()->all());
-        if($items){
-            return response()->json(['message' => 'The item has been successfully created.','item' => new AddressResource($items)]);
-        } else {
-            return response()->json(['error' => 'Failed to created the item']);
-        }
-    }
-
-    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
@@ -65,31 +44,17 @@ class AddressController extends Controller
     }
 
     /**
-     * @param AddressRequest $request
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(AddressRequest $request, $id)
-    {
-        $item = $this->repository->update($id, $request->safe()->all());
-        if($item){
-            return response()->json(['message' => 'The item has been successfully updated.','item' => AddressResource::make($item)]);
-        } else {
-            return response()->json(['error' => 'Failed to updated the item']);
-        }
-    }
-
-    /**
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-         $item = $this->repository->delete($id);
+        $item = $this->repository->delete($id);
         if($item){
             return response()->json(['message' => 'Items have been item deleted']);
         }else{
             return response()->json(['message' => 'The item could not be found']);
         }
     }
+
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Public;
 
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class AddressResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +17,10 @@ class CategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'parent' => CategoryResource::make($this->parent) ?? null,
-            'children' => CategoryResource::collection($this->whenLoaded('children')),
-            'order' => $this->order ?? null
+            'user' => UserResource::make($this->user),
+            'title' => $this->title,
+            'address' => $this->address,
+            'status' => $this->status
         ];
     }
 }

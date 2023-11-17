@@ -1,24 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\API\User\Account;
+namespace App\Http\Controllers\API\Admin\Product;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\User\AddressRepository;
-use App\Http\Requests\User\AddressRequest;
-use App\Http\Resources\Public\AddressResource;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Repositories\User\ProductRepository;
+use App\Http\Requests\Admin\ProductRequest;
+use App\Http\Resources\Public\ProductResource;
+use Illuminate\Http\Request;
 
-class AddressController extends Controller
+class ProductController extends Controller
 {
-    /**
-     * @var AddressRepository
-     */
     private $repository = null;
 
-    /**
-     * @param AddressRepository $repository
-     */
-    public function __construct(AddressRepository $repository)
+    public function __construct(ProductRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -28,23 +22,23 @@ class AddressController extends Controller
      */
     public function index()
     {
-        $items= $this->repository->filter('user_id',Auth::user()->id);
+        $items= $this->repository->all();
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => AddressResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)]);
         }else{
             return response()->json(['message' => 'The item could not be found']);
         }
     }
 
     /**
-     * @param AddressRequest $request
+     * @param ProductRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(AddressRequest $request)
+    public function store(ProductRequest $request)
     {
         $items =  $this->repository->create($request->safe()->all());
         if($items){
-            return response()->json(['message' => 'The item has been successfully created.','item' => new AddressResource($items)]);
+            return response()->json(['message' => 'The item has been successfully created.','item' => new ProductResource($items)]);
         } else {
             return response()->json(['error' => 'Failed to created the item']);
         }
@@ -58,22 +52,22 @@ class AddressController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => AddressResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => ProductResource::make($item)]);
         }else{
             return response()->json(['message' => 'The item could not be found']);
         }
     }
 
     /**
-     * @param AddressRequest $request
      * @param $id
+     * @param ProductRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AddressRequest $request, $id)
+    public function update($id ,ProductRequest $request)
     {
         $item = $this->repository->update($id, $request->safe()->all());
         if($item){
-            return response()->json(['message' => 'The item has been successfully updated.','item' => AddressResource::make($item)]);
+            return response()->json(['message' => 'The item has been successfully updated.','item' => ProductResource::make($item)]);
         } else {
             return response()->json(['error' => 'Failed to updated the item']);
         }
@@ -85,7 +79,7 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-         $item = $this->repository->delete($id);
+        $item = $this->repository->delete($id);
         if($item){
             return response()->json(['message' => 'Items have been item deleted']);
         }else{

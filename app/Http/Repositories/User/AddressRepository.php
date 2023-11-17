@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Repositories\User;
 
+use App\Http\Repositories\BaseRepository;
 use App\Models\Address;
 use Illuminate\Support\Facades\Auth;
 

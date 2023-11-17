@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Admin;
 
+use App\Enums\Status;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
-class CategoryRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +25,13 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'parent_id' => 'nullable|integer',
+            'description' => 'required|string',
+            'category' => 'required|integer',
+            'original_price' => 'required|decimal:0,2|min:0.01',
+            'discount_price' => 'required|decimal:0,2|min:0.01',
+            'stock' => 'required|integer',
             'order' => 'nullable|integer',
+            'status' => ['required|string|max:255',new Enum(Status::class)],
         ];
     }
 }

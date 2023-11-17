@@ -1,7 +1,6 @@
 <?php
-namespace App\Http\Repositories\User;
+namespace App\Http\Repositories;
 
-use App\Http\Repositories\User\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements RepositoryInterface
