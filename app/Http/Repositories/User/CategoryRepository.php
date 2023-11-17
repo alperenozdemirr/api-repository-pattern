@@ -2,8 +2,9 @@
 namespace App\Http\Repositories\User;
 
 use App\Models\Category;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CategoryRepository extends BaseRepository
 {
@@ -18,20 +19,32 @@ class CategoryRepository extends BaseRepository
 
     public function create(array $data)
     {
-        if (!is_null($data['parent_id'])){
-            $item = (new Category())->find($data['parent_id']);
-            if(!$item){
-                return response()->json(
-                    [
-                        'errors' => [
-                            'parent_id' => ["This {$data['parent_id']} id is not found"]
-                        ]
-                    ],
-                    JsonResponse::HTTP_UNPROCESSABLE_ENTITY
+        if (!empty($data['parent_id']) && !is_null($data['parent_id'])) {
+            $item = Category::find($data['parent_id']);
+            if (empty($item)) {
+                throw new HttpResponseException(
+                    response()->json(['parent_id' => [
+                        "This " . $data['parent_id'] . " id is not found"
+                    ]], 422)
                 );
             }
         }
         return parent::create($data);
+    }
+
+    public function update($id, array $data)
+    {
+        if (!empty($data['parent_id']) && !is_null($data['parent_id'])) {
+            $item = Category::find($data['parent_id']);
+            if (empty($item)) {
+                throw new HttpResponseException(
+                    response()->json(['parent_id' => [
+                        "This " . $data['parent_id'] . " id is not found"
+                    ]], 422)
+                );
+            }
+        }
+        return parent::update($id,$data);
     }
 
 }

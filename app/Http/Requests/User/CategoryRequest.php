@@ -23,7 +23,7 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'parent_id' => 'nullable|integer|exists:categories',
+            'parent_id' => 'nullable|integer',
             'order' => 'nullable|integer',
         ];
     }
