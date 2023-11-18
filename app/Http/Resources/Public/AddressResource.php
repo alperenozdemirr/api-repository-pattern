@@ -20,6 +20,10 @@ class AddressResource extends JsonResource
             'user' => UserResource::make($this->user),
             'title' => $this->title,
             'address' => $this->address,
+            'city' => [
+                'code' => $this->city_code,
+                'name' => $this->city->name,
+            ],
             'status' => $this->status
         ];
     }

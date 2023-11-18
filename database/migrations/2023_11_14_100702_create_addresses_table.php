@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->text('address');
+            $table->foreignId('city_code');
             $table->enum('status',Status::toValues())->default(Status::PASSIVE);
             $table->timestamps();
         });

@@ -26,6 +26,7 @@ class AddressRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'address' => 'required|string|max:255',
+            'city_code' => 'required|integer',
         ];
     }
 }
