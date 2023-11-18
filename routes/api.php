@@ -7,6 +7,7 @@ use App\Http\Controllers\API\User\Account\AddressController;
 use App\Http\Controllers\API\User\Product\ProductController;
 use App\Http\Controllers\API\User\Category\CategoryController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,10 +38,21 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','admin']],function (){
-    Route::get('admin/test',function (){
+Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']],function (){
+    //admin test
+    Route::get('test',function (){
        return response()->json(['message' => 'admin test success']);
     });
+    //admin products
+    Route::resource('products',\App\Http\Controllers\API\Admin\Product\ProductController::class);
+    //admin categories
+    Route::resource('categories',\App\Http\Controllers\API\Admin\Category\CategoryController::class);
 });
-Route::resource('products',ProductController::class);
-Route::resource('categories',CategoryController::class);
+//categories
+Route::get('categories',[CategoryController::class,'index']);
+
+//products
+Route::get('products',[ProductController::class,'index']);
+Route::get('products/{product_id}',[ProductController::class,'show']);
+
+

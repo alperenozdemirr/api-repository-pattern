@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API\Admin\Product;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\User\ProductRepository;
+use App\Http\Repositories\Admin\ProductRepository;
 use App\Http\Requests\Admin\ProductRequest;
 use App\Http\Resources\Public\ProductResource;
 use Illuminate\Http\Request;

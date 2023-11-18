@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\API\Admin\Category;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\User\CategoryRepository;
+
+use App\Http\Repositories\Admin\CategoryRepository;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Resources\Public\CategoryResource;
 use Illuminate\Http\Request;
@@ -20,7 +21,6 @@ class CategoryController extends Controller
     public function index()
     {
         $items= $this->repository->all();
-
         $items->load('parent');
         $items->load('children');
         if($items){
