@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AddressSeeder::class);
         $this->call(CitySeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

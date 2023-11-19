@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->bigInteger('category');
+            $table->foreignId('category_id')->constrained();
             $table->decimal('original_price',10,2);
             $table->decimal('discount_price',10,2);
             $table->integer('stock');

@@ -65,12 +65,15 @@ class ProductController extends Controller
      */
     public function update($id ,ProductRequest $request)
     {
-        $item = $this->repository->update($id, $request->safe()->all());
-        if($item){
-            return response()->json(['message' => 'The item has been successfully updated.','item' => ProductResource::make($item)]);
-        } else {
-            return response()->json(['error' => 'Failed to updated the item']);
-        }
+        $checkId = $this->repository->find($id);
+        if(!empty($checkId)){
+            $item = $this->repository->update($id, $request->safe()->all());
+            if($item){
+                return response()->json(['message' => 'The item has been successfully updated.','item' => ProductResource::make($item)]);
+
+            } else return response()->json(['error' => 'Failed to updated the item']);
+
+        } else return response()->json(['message' => 'The item could not be found']);
     }
 
     /**
