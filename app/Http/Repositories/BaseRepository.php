@@ -2,6 +2,7 @@
 namespace App\Http\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BaseRepository implements RepositoryInterface
 {
@@ -72,9 +73,14 @@ class BaseRepository implements RepositoryInterface
      * @param $condition
      * @return mixed
      */
-    public function filter($column, $condition)
+    public function filter($column = null, $condition = null)
     {
-        return $this->model->where($column, $condition)->get();
+        if ($column == null && $condition == null){
+            return $this->model->all();
+        }else{
+            return $this->model->where($column, $condition)->get();
+        }
+
     }
 }
 ?>

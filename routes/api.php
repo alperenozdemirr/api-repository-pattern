@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\User\Account\AddressController;
 use App\Http\Controllers\API\User\Product\ProductController;
 use App\Http\Controllers\API\User\Category\CategoryController;
+use App\Http\Controllers\API\User\Product\CommentController;
 
 
 /*
@@ -33,7 +34,7 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
     Route::prefix('account')->group(function (){
         Route::resource('address',AddressController::class);
     });
-
+    Route::post('products/comments',[CommentController::class,'store']);
     //logged out
     Route::post('/logout', [AuthController::class, 'logout']);
 });
@@ -47,12 +48,18 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::resource('products',\App\Http\Controllers\API\Admin\Product\ProductController::class);
     //admin categories
     Route::resource('categories',\App\Http\Controllers\API\Admin\Category\CategoryController::class);
+    //admin product comments
+    Route::get('products/{id}/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'getProductComments']);
+    //Route::get('products/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'index']);
+    Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
+    //Route::get('test-data',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'index']);
 });
 //categories
 Route::get('categories',[CategoryController::class,'index']);
-
 //products
 Route::get('products',[ProductController::class,'index']);
 Route::get('products/{product_id}',[ProductController::class,'show']);
+//products comments
+Route::get('products/{id}/comments',[CommentController::class,'index']);
 
 

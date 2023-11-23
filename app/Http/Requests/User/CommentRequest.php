@@ -6,7 +6,7 @@ use App\Enums\Status;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class AddressRequest extends FormRequest
+class CommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class AddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'city_code' => 'required|integer',
-            'status' => ['required|string',new Enum(Status::class)],
+            'product_id' => 'required|integer',
+            'content' => 'required|string|min:3',
+            'status' => ['required|string|max:255',new Enum(Status::class)],
         ];
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Admin;
 
 use App\Enums\Status;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class AddressRequest extends FormRequest
+class UpdateCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,10 @@ class AddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'city_code' => 'required|integer',
-            'status' => ['required|string',new Enum(Status::class)],
+            'status' => [
+                'required|string|max:255',
+                new Enum(Status::class),
+            ],
         ];
     }
 }
