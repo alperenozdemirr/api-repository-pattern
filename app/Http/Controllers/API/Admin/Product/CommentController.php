@@ -7,6 +7,7 @@ use App\Http\Repositories\Admin\CommentRepository;
 use App\Http\Requests\Admin\UpdateCommentRequest;
 use App\Http\Requests\User\CommentRequest;
 use App\Http\Resources\Public\CommentResource;
+use App\Http\Services\FileService;
 use Illuminate\Http\Request;
 use function Symfony\Component\Translation\t;
 
@@ -61,8 +62,9 @@ class CommentController extends Controller
      * @param UpdateCommentRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update($id, UpdateCommentRequest $request)
+    public function update($id, UpdateCommentRequest $request,FileService $fileService)
     {
+        $fileService->fileUpload();
         $checkId = $this->repository->find($id);
         if(!empty($checkId)){
             $item = $this->repository->update($id, $request->safe()->all());

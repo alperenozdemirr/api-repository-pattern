@@ -44,15 +44,15 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::get('test',function (){
        return response()->json(['message' => 'admin test success']);
     });
+    Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
     //admin products
     Route::resource('products',\App\Http\Controllers\API\Admin\Product\ProductController::class);
     //admin categories
     Route::resource('categories',\App\Http\Controllers\API\Admin\Category\CategoryController::class);
     //admin product comments
     Route::get('products/{id}/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'getProductComments']);
-    //Route::get('products/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'index']);
-    Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
-    //Route::get('test-data',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'index']);
+
+    Route::get('test-data',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'index']);
 });
 //categories
 Route::get('categories',[CategoryController::class,'index']);
