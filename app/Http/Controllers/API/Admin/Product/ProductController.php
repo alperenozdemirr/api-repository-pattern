@@ -13,12 +13,11 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     private $repository = null;
-    protected $productImageService;
 
-    public function __construct(ProductRepository $repository, ProductImageService $productImageService)
+    public function __construct(ProductRepository $repository)
     {
         $this->repository = $repository;
-        $this->productImageService = $productImageService;
+
     }
 
     /**
