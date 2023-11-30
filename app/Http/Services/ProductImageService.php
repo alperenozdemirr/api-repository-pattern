@@ -11,23 +11,29 @@ use Illuminate\Support\Str;
 
 class ProductImageService
 {
-    protected const imageDirectory = "files/products/images";
+    protected const imageDirectory = "public/files/products/images";
     protected const addToDatabase = true;
 
-    public function imageUpload($image, $product_id, $order = null){
-        $imageName = $image ?? $image->uniqid().Str::random(4).'.'.$image->getClientOriginalExtension();
-        Storage::disk('local')->put(self::imageDirectory . '/' . $imageName, file_get_contents($image));
-        $path = self::imageDirectory . '/' . $imageName;
-        if (self::addToDatabase) {
-            return $this->storeFile($imageName ,$product_id,$order,$path);
+    public function imageUpload($images, $product_id, $order = null){
+        //$imageName = $image ?? $image->uniqid().Str::random(4).'.'.$image->getClientOriginalExtension();
+        $uploadFiles = [];
+        foreach ($images as $image){
+            $imageName = $image->hashName();
+            $image->store(self::imageDirectory);
+            $path_directory = self::imageDirectory . '/' . $imageName;
+            //$url = asset('storage/' . str_replace('public/', '', $path_directory));
+            $path = parse_url(asset('storage/' . str_replace('public/', '', $path_directory)), PHP_URL_PATH);
+            if (self::addToDatabase) {
+                $uploadFiles[] = $this->storeFile($imageName ,$product_id,$order,$path);
+            }
         }
+            if ($uploadFiles) return $uploadFiles;
 
-        return null;
+        return false;
     }
 
     protected function storeFile($imageName ,$product_id,$order,$path)
     {
-
         $imageRecord = ProductImage::create([
             'name' => $imageName,
             'image_path' => $path,
@@ -38,12 +44,15 @@ class ProductImageService
         return $imageRecord;
     }
 
-    protected function deleteFile($imageId)
+    public function deleteFile($imageId)
     {
-        $image =  ProductImage::find($imageId);
-        if ($image){
-            $image->delete();
+        $deleteItem = ProductImage::find($imageId);
+        if ($deleteItem){
+            $fileFullPath = self::imageDirectory . '/' . $deleteItem->name;
+            $deleteItem->delete();
+            Storage::delete($fileFullPath);
             return true;
+
         }else return false;
     }
 }

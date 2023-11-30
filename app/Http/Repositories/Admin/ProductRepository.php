@@ -2,19 +2,21 @@
 namespace App\Http\Repositories\Admin;
 
 use App\Http\Repositories\BaseRepository;
+use App\Http\Services\ProductImageService;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProductRepository extends BaseRepository
 {
-
-    public function __construct(Product $model = null)
+    protected $productImageService;
+    public function __construct(Product $model = null, ProductImageService $productImageService)
     {
         if($model === null) {
             $model = new Product();
         }
         parent::__construct($model);
+        $this->productImageService = $productImageService;
     }
 
     protected function validateExistence(array $data){
@@ -44,6 +46,17 @@ class ProductRepository extends BaseRepository
         $this->validateExistence($data);
 
         return parent::update($id, $data);
+    }
+
+    public function delete($id)
+    {
+        $product = $this->model->find($id);
+        $productImages = $product->images;
+        foreach ($productImages as $productImage){
+            $this->productImageService->deleteFile($productImage->id);
+        }
+
+        return parent::delete($id);
     }
 
 }

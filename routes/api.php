@@ -7,6 +7,7 @@ use App\Http\Controllers\API\User\Account\AddressController;
 use App\Http\Controllers\API\User\Product\ProductController;
 use App\Http\Controllers\API\User\Category\CategoryController;
 use App\Http\Controllers\API\User\Product\CommentController;
+use App\Http\Controllers\API\Admin\Product\ProductImageController;
 
 
 /*
@@ -47,10 +48,14 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
     //admin products
     Route::resource('products',\App\Http\Controllers\API\Admin\Product\ProductController::class);
+    //admin product images
+    Route::post('products/image',[ProductImageController::class,'store']);
+    Route::delete('products/image/{id}',[ProductImageController::class,'destroy']);
     //admin categories
     Route::resource('categories',\App\Http\Controllers\API\Admin\Category\CategoryController::class);
     //admin product comments
     Route::get('products/{id}/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'getProductComments']);
+
 
     Route::get('test-data',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'index']);
 });

@@ -6,15 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\ProductRepository;
 use App\Http\Requests\Admin\ProductRequest;
 use App\Http\Resources\Public\ProductResource;
+use App\Http\Services\ProductImageService;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     private $repository = null;
+    protected $productImageService;
 
-    public function __construct(ProductRepository $repository)
+    public function __construct(ProductRepository $repository, ProductImageService $productImageService)
     {
         $this->repository = $repository;
+        $this->productImageService = $productImageService;
     }
 
     /**
@@ -82,8 +86,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $item = $this->repository->delete($id);
-        if($item){
+        $product = Product::find($id);
+        if($product){
+            $this->repository->delete($id);
             return response()->json(['message' => 'Items have been item deleted']);
         }else{
             return response()->json(['message' => 'The item could not be found']);
