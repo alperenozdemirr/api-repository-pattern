@@ -8,6 +8,7 @@ use App\Http\Controllers\API\User\Product\ProductController;
 use App\Http\Controllers\API\User\Category\CategoryController;
 use App\Http\Controllers\API\User\Product\CommentController;
 use App\Http\Controllers\API\Admin\Product\ProductImageController;
+use App\Http\Controllers\API\User\Account\ShoppingCartController;
 
 
 /*
@@ -34,6 +35,8 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
     //accounts
     Route::prefix('account')->group(function (){
         Route::resource('address',AddressController::class);
+        //shopping cart
+        Route::resource('shopping-cart',ShoppingCartController::class);
     });
     Route::post('products/comments',[CommentController::class,'store']);
     //logged out
