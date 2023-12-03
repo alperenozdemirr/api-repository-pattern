@@ -12,6 +12,11 @@ class Product extends Model
     use HasFactory;
     protected $guarded = [];
 
+    protected $casts = [
+        //'original_price' => 'decimal:2',
+        //'discount_price' => 'decimal:2',
+    ];
+
     public function category(): HasOne
     {
         return $this->hasOne(Category::class,'id','category_id');

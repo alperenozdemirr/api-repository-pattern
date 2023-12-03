@@ -19,6 +19,7 @@ class ShoppingCartResource extends JsonResource
             'id' => $this->id,
             'user' => UserResource::make($this->user),
             'product' => ProductResource::make($this->product),
+            'amount' => $this->amount,
         ];
     }
 }

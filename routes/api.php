@@ -37,6 +37,8 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
         Route::resource('address',AddressController::class);
         //shopping cart
         Route::resource('shopping-cart',ShoppingCartController::class);
+        Route::get('shopping-cart/amount-increment/{id}',[ShoppingCartController::class,'amountIncrement']);
+        Route::get('shopping-cart/amount-decrement/{id}',[ShoppingCartController::class,'amountDecrement']);
     });
     Route::post('products/comments',[CommentController::class,'store']);
     //logged out
