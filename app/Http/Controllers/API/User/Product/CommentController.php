@@ -24,9 +24,9 @@ class CommentController extends Controller
     {
         $items= $this->repository->filter('product_id',$producId);
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => CommentResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => CommentResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -38,9 +38,9 @@ class CommentController extends Controller
     {
         $items =  $this->repository->create($request->safe()->all());
         if($items){
-            return response()->json(['message' => 'The item has been successfully created.','item' => new CommentResource($items)]);
+            return response()->json(['message' => 'The item has been successfully created.','item' => new CommentResource($items)],201);
         } else {
-            return response()->json(['error' => 'Failed to created the item']);
+            return response()->json(['error' => 'Failed to created the item'],422);
         }
     }
 }

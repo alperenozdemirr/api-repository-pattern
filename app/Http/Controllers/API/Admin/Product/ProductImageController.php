@@ -23,17 +23,17 @@ class ProductImageController extends Controller
         $order = empty($order) ? null : $order;
         $save = $this->productImageService->imageUpload($images,$request['product_id'],$order);
         if($save){
-            return response()->json(['message' => 'The item has been successfully created.','item' => ProductImageResource::collection($save)]);
+            return response()->json(['message' => 'The item has been successfully created.','item' => ProductImageResource::collection($save)],201);
         }
-        return response()->json(['error' => 'Failed to created the item']);
+        return response()->json(['error' => 'Failed to created the item'],422);
     }
 
     public function destroy($imageId){
         $delete = $this->productImageService->deleteFile($imageId);
         if($delete){
-            return response()->json(['message' => 'Items have been item deleted']);
+            return response()->json(['message' => 'Items have been item deleted'],204);
         }
-        return response()->json(['message' => 'The item could not be found']);
+        return response()->json(['error' => 'Failed to delete the item'],400);
 
     }
 

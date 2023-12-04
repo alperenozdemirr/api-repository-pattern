@@ -27,9 +27,9 @@ class ProductController extends Controller
     {
         $items= $this->repository->all();
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -41,9 +41,9 @@ class ProductController extends Controller
     {
         $items =  $this->repository->create($request->safe()->all());
         if($items){
-            return response()->json(['message' => 'The item has been successfully created.','item' => new ProductResource($items)]);
+            return response()->json(['message' => 'The item has been successfully created.','item' => new ProductResource($items)],201);
         } else {
-            return response()->json(['error' => 'Failed to created the item']);
+            return response()->json(['error' => 'Failed to created the item'],422);
         }
     }
 
@@ -55,9 +55,9 @@ class ProductController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => ProductResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => ProductResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -68,15 +68,11 @@ class ProductController extends Controller
      */
     public function update($id ,ProductRequest $request)
     {
-        $checkId = $this->repository->find($id);
-        if(!empty($checkId)){
-            $item = $this->repository->update($id, $request->safe()->all());
-            if($item){
-                return response()->json(['message' => 'The item has been successfully updated.','item' => ProductResource::make($item)]);
+        $item = $this->repository->update($id, $request->safe()->all());
+        if($item){
+            return response()->json(['message' => 'The item has been successfully updated.','item' => ProductResource::make($item)],200);
 
-            } else return response()->json(['error' => 'Failed to updated the item']);
-
-        } else return response()->json(['message' => 'The item could not be found']);
+        } else return response()->json(['error' => 'Failed to updated the item'],422);
     }
 
     /**
@@ -88,9 +84,9 @@ class ProductController extends Controller
         $product = Product::find($id);
         if($product){
             $this->repository->delete($id);
-            return response()->json(['message' => 'Items have been item deleted']);
+            return response()->json(['message' => 'Items have been item deleted'],204);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['error' => 'Failed to delete the item'],400);
         }
     }
 }

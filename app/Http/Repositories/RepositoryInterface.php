@@ -3,6 +3,7 @@ namespace App\Http\Repositories;
 
 interface RepositoryInterface
 {
+
     /**
      * @param $id
      * @return mixed

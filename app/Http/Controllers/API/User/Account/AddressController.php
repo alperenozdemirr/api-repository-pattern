@@ -30,9 +30,9 @@ class AddressController extends Controller
     {
         $items= $this->repository->filter('user_id',Auth::user()->id);
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => AddressResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => AddressResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -44,9 +44,9 @@ class AddressController extends Controller
     {
         $items =  $this->repository->create($request->safe()->all());
         if($items){
-            return response()->json(['message' => 'The item has been successfully created.','item' => new AddressResource($items)]);
+            return response()->json(['message' => 'The item has been successfully created.','item' => new AddressResource($items)],201);
         } else {
-            return response()->json(['error' => 'Failed to created the item']);
+            return response()->json(['error' => 'Failed to created the item'],422);
         }
     }
 
@@ -58,9 +58,9 @@ class AddressController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => AddressResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => AddressResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -73,9 +73,9 @@ class AddressController extends Controller
     {
         $item = $this->repository->update($id, $request->safe()->all());
         if($item){
-            return response()->json(['message' => 'The item has been successfully updated.','item' => AddressResource::make($item)]);
+            return response()->json(['message' => 'The item has been successfully updated.','item' => AddressResource::make($item)],200);
         } else {
-            return response()->json(['error' => 'Failed to updated the item']);
+            return response()->json(['error' => 'Failed to updated the item'],422);
         }
     }
 
@@ -88,8 +88,8 @@ class AddressController extends Controller
          $item = $this->repository->delete($id);
         if($item){
             return response()->json(['message' => 'Items have been item deleted']);
-        }else{
-            return response()->json(['message' => 'The item could not be found']);
         }
+        return response()->json(['error' => 'Failed to delete the item'],400);
+
     }
 }

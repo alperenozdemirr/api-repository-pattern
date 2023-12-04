@@ -12,6 +12,17 @@ class BaseRepository implements RepositoryInterface
         $this->model = $model;
     }
 
+    protected function validateExistenceId($id){
+        $item = $this->model->find($id);
+        if (empty($item)) {
+            throw new HttpResponseException(
+                response()->json(['message' => [
+                    "The item could not be found."
+                ]], 404)
+            );
+        }
+    }
+
     /**
      * @param $id
      * @return mixed
@@ -45,6 +56,7 @@ class BaseRepository implements RepositoryInterface
      */
     public function update($id, array $data)
     {
+        $this->validateExistenceId($id);
         $item = $this->model->find($id);
         $item->update($data);
         return $item;
@@ -55,6 +67,7 @@ class BaseRepository implements RepositoryInterface
      * @return mixed
      */
     public function delete($id){
+        $this->validateExistenceId($id);
         $item = $this->model->find($id);
         return $item->delete();
     }

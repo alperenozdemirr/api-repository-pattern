@@ -25,9 +25,9 @@ class CategoryController extends Controller
         $items->load('parent');
         $items->load('children');
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => CategoryResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => CategoryResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 }

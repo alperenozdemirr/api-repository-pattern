@@ -24,9 +24,9 @@ class CommentController extends Controller
     {
         $items= $this->repository->filter();
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => CommentResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => CommentResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -38,9 +38,9 @@ class CommentController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => CommentResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => CommentResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -51,9 +51,9 @@ class CommentController extends Controller
     public function getProductComments($id){
         $items= $this->repository->get($id);
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => CommentResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => CommentResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -64,16 +64,11 @@ class CommentController extends Controller
      */
     public function update($id, UpdateCommentRequest $request,FileService $fileService)
     {
-        $fileService->fileUpload();
-        $checkId = $this->repository->find($id);
-        if(!empty($checkId)){
-            $item = $this->repository->update($id, $request->safe()->all());
-            if($item){
-                return response()->json(['message' => 'The item has been successfully updated.','item' => CommentResource::make($item)]);
+        $item = $this->repository->update($id, $request->safe()->all());
+        if($item){
+            return response()->json(['message' => 'The item has been successfully updated.','item' => CommentResource::make($item)],200);
 
-            } else return response()->json(['error' => 'Failed to updated the item']);
-
-        } else return response()->json(['message' => 'The item could not be found']);
+        } else return response()->json(['error' => 'Failed to updated the item'],422);
     }
 
     /**
@@ -84,9 +79,9 @@ class CommentController extends Controller
     {
         $item = $this->repository->delete($id);
         if($item){
-            return response()->json(['message' => 'Items have been item deleted']);
+            return response()->json(['message' => 'Items have been item deleted'],204);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['error' => 'Failed to delete the item'],400);
         }
     }
 

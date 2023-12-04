@@ -23,9 +23,9 @@ class ProductController extends Controller
     {
         $items= $this->repository->all();
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -37,9 +37,9 @@ class ProductController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => ProductResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => ProductResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 }

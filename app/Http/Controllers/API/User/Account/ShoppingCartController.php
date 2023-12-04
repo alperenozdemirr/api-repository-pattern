@@ -38,9 +38,9 @@ class ShoppingCartController extends Controller
                 'items' => ShoppingCartResource::collection($items),
                 'item_amount' => $data['itemAmount'],
                 'total_price' => $data['totalPrice'],
-            ]);
+            ],200);
         }
-        return response()->json(['message' => 'The item could not be found']);
+        return response()->json(['message' => 'The item could not be found'], 404);
     }
 
 
@@ -48,9 +48,9 @@ class ShoppingCartController extends Controller
     {
         $item = $this->repository->create($request->safe()->all());
         if ($item) {
-            return response()->json(['message' => 'The item has been successfully created.', 'item' => $item]);
+            return response()->json(['message' => 'The item has been successfully created.', 'item' => $item],201);
         }
-        return response()->json(['error' => 'Failed to create the item']);
+        return response()->json(['error' => 'Failed to create the item'],422);
     }
 
     /**
@@ -60,15 +60,11 @@ class ShoppingCartController extends Controller
      */
     public function update($id, ShoppingCartRequest $request)
     {
-        $checkId = $this->repository->find($id);
-        if($checkId){
             $item = $this->repository->update($id, $request->safe()->all());
             if($item){
-                return response()->json(['message' => 'The item has been successfully updated.','item' => ShoppingCartResource::make($item)]);
+                return response()->json(['message' => 'The item has been successfully updated.','item' => ShoppingCartResource::make($item)],200);
 
-            } else return response()->json(['error' => 'Failed to updated the item']);
-        }
-        return response()->json(['message' => 'The item could not be found']);
+            } else return response()->json(['error' => 'Failed to updated the item'],422);
     }
 
     /**
@@ -79,10 +75,9 @@ class ShoppingCartController extends Controller
     {
         $item = $this->repository->delete($id);
         if ($item){
-            return response()->json(['message' => 'Items have been item deleted']);
+            return response()->json(['message' => 'Items have been item deleted'],204);
         }
-        return response()->json(['message' => 'The item could not be found']);
-
+        return response()->json(['error' => 'Failed to delete the item'],400);
     }
 
     /**
@@ -93,9 +88,9 @@ class ShoppingCartController extends Controller
     {
         $item = $this->repository->amountIncrement($id);
         if($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => ShoppingCartResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => ShoppingCartResource::make($item)],200);
         }
-        return response()->json(['message' => 'The item could not be found']);
+        return response()->json(['message' => 'The item could not be found'],404);
     }
 
     /**
@@ -105,10 +100,10 @@ class ShoppingCartController extends Controller
     public function amountDecrement($id){
         $item = $this->repository->amountDecrement($id);
         if($item === true){
-            return response()->json(['message' => 'Items have been item deleted']);
+            return response()->json(['message' => 'Items have been item deleted'],204);
         } elseif($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => ShoppingCartResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => ShoppingCartResource::make($item)],200);
         }
-        return response()->json(['message' => 'The item could not be found']);
+        return response()->json(['message' => 'The item could not be found'],404);
     }
 }

@@ -24,9 +24,9 @@ class CategoryController extends Controller
         $items->load('parent');
         $items->load('children');
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => CategoryResource::collection($items)]);
+            return response()->json(['message' => 'Items have been listed successfully','items' => CategoryResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -38,9 +38,9 @@ class CategoryController extends Controller
     {
         $item =  $this->repository->create($request->safe()->all());
         if($item){
-            return response()->json(['message' => 'The item has been successfully created.','item' => new CategoryResource($item)]);
+            return response()->json(['message' => 'The item has been successfully created.','item' => new CategoryResource($item)],201);
         } else {
-            return response()->json(['error' => "Failed to created the item"]);
+            return response()->json(['error' => "Failed to created the item"],422);
         }
     }
 
@@ -52,9 +52,9 @@ class CategoryController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
-            return response()->json(['message' => 'Items have been listed successfully','item' => CategoryResource::make($item)]);
+            return response()->json(['message' => 'Items have been listed successfully','item' => CategoryResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['message' => 'The item could not be found'],404);
         }
     }
 
@@ -67,9 +67,9 @@ class CategoryController extends Controller
     {
         $item = $this->repository->update($id, $request->safe()->all());
         if($item){
-            return response()->json(['message' => 'The item has been successfully updated.','item' => CategoryResource::make($item)]);
+            return response()->json(['message' => 'The item has been successfully updated.','item' => CategoryResource::make($item)],200);
         } else {
-            return response()->json(['error' => 'Failed to updated the item']);
+            return response()->json(['error' => 'Failed to updated the item'],422);
         }
     }
 
@@ -81,9 +81,9 @@ class CategoryController extends Controller
     {
         $item = $this->repository->delete($id);
         if($item){
-            return response()->json(['message' => 'Items have been item deleted']);
+            return response()->json(['message' => 'Items have been item deleted'],204);
         }else{
-            return response()->json(['message' => 'The item could not be found']);
+            return response()->json(['error' => 'Failed to delete the item'],400);
         }
     }
 }
