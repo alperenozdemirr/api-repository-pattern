@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API\Admin\Account;
+namespace App\Http\Controllers\API\Admin\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\UserRepository;
-
 use App\Http\Requests\Admin\UpdateUserRequest;
-use App\Http\Requests\Public\FileRequest;
 use App\Http\Resources\Admin\UserResource;
-use App\Http\Resources\Public\FileResource;
 use App\Http\Services\FileService;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {

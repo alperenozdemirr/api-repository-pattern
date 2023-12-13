@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Admin\Product\ProductImageController;
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\User\Account\AddressController;
-use App\Http\Controllers\API\User\Product\ProductController;
+use App\Http\Controllers\API\User\Account\FavoriteController;
+use App\Http\Controllers\API\User\Account\ShoppingCartController;
 use App\Http\Controllers\API\User\Category\CategoryController;
 use App\Http\Controllers\API\User\Product\CommentController;
-use App\Http\Controllers\API\Admin\Product\ProductImageController;
-use App\Http\Controllers\API\User\Account\ShoppingCartController;
-use App\Http\Controllers\API\User\Account\FavoriteController;
+use App\Http\Controllers\API\User\Product\ProductController;
+use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -57,7 +56,7 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
        return response()->json(['message' => 'admin test success']);
     });
     //users managment
-    Route::resource('users',\App\Http\Controllers\API\Admin\Account\UserController::class);
+    Route::resource('users', \App\Http\Controllers\API\Admin\User\UserController::class);
 
     Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
     //admin products
