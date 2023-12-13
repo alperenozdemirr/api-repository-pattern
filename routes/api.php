@@ -56,6 +56,9 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::get('test',function (){
        return response()->json(['message' => 'admin test success']);
     });
+    //users managment
+    Route::resource('users',\App\Http\Controllers\API\Admin\Account\UserController::class);
+
     Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
     //admin products
     Route::resource('products',\App\Http\Controllers\API\Admin\Product\ProductController::class);

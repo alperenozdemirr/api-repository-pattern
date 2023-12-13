@@ -81,7 +81,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
+        $product = $this->repository->find($id);
         if($product){
             $this->repository->delete($id);
             return response()->json(['message' => 'Items have been item deleted'],204);

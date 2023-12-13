@@ -8,8 +8,8 @@ use App\Enums\ContentType;
 use App\Enums\FileType;
 class FileService
 {
-    protected const fileDirectory = "users/files";
-    protected const userImageDirectory = "users/images";
+    protected const fileDirectory = "public/files/users/files";
+    protected const userImageDirectory = "public/files/users/images";
     protected const addToDatabase = true;
 
     public function fileUpload($file,$content_type = null)
@@ -18,15 +18,15 @@ class FileService
         if($content_type==null){
             $content_type = ContentType::USER;
         }
-        $fileName = $file ?? $file->uniqid().Str::random(4).'.'.$file->getClientOriginalExtension();
-        Storage::disk('local')->put(self::fileDirectory . '/' . $fileName, file_get_contents($file));
-        $path = self::fileDirectory . '/' . $fileName;
-
+        $fileName = $file->hashName();
+        $file->store(self::fileDirectory);
+        $path_directory = self::fileDirectory . '/' . $fileName;
+        $path = parse_url(asset('storage/' . str_replace('public/', '', $path_directory)), PHP_URL_PATH);
         if (self::addToDatabase) {
             return $this->storeFile($fileName ,$file_type,$content_type,$path);
         }
 
-        return null;
+        return false;
     }
 
     public function imageUpload($file,$content_type = null){
@@ -34,14 +34,15 @@ class FileService
         if($content_type==null){
             $content_type = ContentType::USER;
         }
-        $fileName = $file ?? $file->uniqid().Str::random(4).'.'.$file->getClientOriginalExtension();
-        Storage::disk('local')->put(self::userImageDirectory . '/' . $fileName, file_get_contents($file));
-        $path = self::userImageDirectory . '/' . $fileName;
+        $fileName = $file->hashName();
+        $file->store(self::userImageDirectory);
+        $path_directory = self::userImageDirectory . '/' . $fileName;
+        $path = parse_url(asset('storage/' . str_replace('public/', '', $path_directory)), PHP_URL_PATH);
         if (self::addToDatabase) {
             return $this->storeFile($fileName ,$file_type,$content_type,$path);
         }
 
-        return null;
+        return false;
     }
 
     protected function storeFile($fileName,$file_type,$content_type,$path)
@@ -57,12 +58,27 @@ class FileService
 
         return $fileRecord;
     }
-    protected function deleteFile($fileId)
+    public function fileDelete($fileId)
     {
-        $file =  File::find($fileId);
-        if ($file){
-            $file->delete();
+        $deleteItem =  File::find($fileId);
+        if ($deleteItem){
+            $fileFullPath = self::fileDirectory . '/' . $deleteItem->name;
+            $deleted = $deleteItem->delete();
+            Storage::delete($fileFullPath);
+            if($deleted){ return true;} else return false;
+
+        }else return true;
+    }
+
+    public function imageDelete($imageId)
+    {
+        $deleteItem =  File::find($imageId);
+        if ($deleteItem){
+            $fileFullPath = self::userImageDirectory . '/' . $deleteItem->name;
+            $deleteItem->delete();
+            Storage::delete($fileFullPath);
             return true;
+
         }else return false;
     }
 }
