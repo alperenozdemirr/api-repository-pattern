@@ -38,6 +38,7 @@ class UserController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
+            activity()->log('asdasdasd');
             return response()->json(['message' => 'Items have been listed successfully','item' => UserResource::make($item)],200);
         }else{
             return response()->json(['message' => 'The item could not be found'],404);

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\ModelLogObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,6 +17,13 @@ class Product extends Model
         //'original_price' => 'decimal:2',
         //'discount_price' => 'decimal:2',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::observe(ModelLogObserver::class);
+    }
 
     public function category(): HasOne
     {
