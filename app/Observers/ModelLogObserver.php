@@ -7,18 +7,71 @@ use Illuminate\Support\Facades\Auth;
 
 class ModelLogObserver
 {
+    protected $user = null;
+
+    public function __construct()
+    {
+        $user = Auth::user();
+        if ($user) {
+            $this->user = $user;
+        }
+    }
+
+    /**
+     * @param Model $model
+     * @return false|string
+     */
+    protected function getModelName(Model $model)
+    {
+        $modelName = get_class($model);
+        $explodedClassName = explode('\\', $modelName);
+        $shortClassName = end($explodedClassName);
+
+        return $shortClassName;
+    }
+
+    /**
+     * @param Model $model
+     * @param string $message
+     * @return void
+     */
+    protected function logActivity(Model $model, string $message)
+    {
+        activity()
+            ->performedOn($model)
+            ->causedBy(Auth::user())
+            ->withProperties(
+                [
+                    'action' =>$this->getModelName($model),
+                    'role' => $this->user->type,
+                ])
+            ->log($message);
+    }
+
+    /**
+     * @param Model $model
+     * @return void
+     */
     public function created(Model $model)
     {
-        activity()->log( get_class($model).": test created");
+        $this->logActivity($model,'created');
     }
 
+    /**
+     * @param Model $model
+     * @return void
+     */
     public function updated(Model $model)
     {
-        activity()->log(get_class($model).": test updated");
+        $this->logActivity($model,'updated');
     }
 
+    /**
+     * @param Model $model
+     * @return void
+     */
     public function deleted(Model $model)
     {
-        activity()->log(get_class($model).": test deleted");
+        $this->logActivity($model,'deleted');
     }
 }

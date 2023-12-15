@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Observers\ModelLogObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Product extends Model
+class Product extends Base
 {
     use HasFactory;
     protected $guarded = [];
@@ -18,12 +17,6 @@ class Product extends Model
         //'discount_price' => 'decimal:2',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::observe(ModelLogObserver::class);
-    }
 
     public function category(): HasOne
     {
