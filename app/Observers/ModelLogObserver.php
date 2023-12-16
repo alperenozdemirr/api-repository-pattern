@@ -40,11 +40,8 @@ class ModelLogObserver
         activity()
             ->performedOn($model)
             ->causedBy(Auth::user())
-            ->withProperties(
-                [
-                    'action' =>$this->getModelName($model),
-                    'role' => $this->user->type,
-                ])
+            //->withProperties(['action' => $this->getModelName($model)])
+            ->inLog($this->getModelName($model))
             ->log($message);
     }
 
