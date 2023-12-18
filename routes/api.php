@@ -8,6 +8,7 @@ use App\Http\Controllers\API\User\Account\ShoppingCartController;
 use App\Http\Controllers\API\User\Category\CategoryController;
 use App\Http\Controllers\API\User\Product\CommentController;
 use App\Http\Controllers\API\User\Product\ProductController;
+use App\Http\Controllers\API\User\Account\AccountController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -34,6 +35,15 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
     });
     //accounts
     Route::prefix('account')->group(function (){
+        //user panel account information
+        Route::get('information',[AccountController::class,'index']);
+        Route::put('information',[AccountController::class,'update']);
+        //user image change
+        Route::post('image',[AccountController::class,'imageChange']);
+        //user files
+        Route::post('files',[AccountController::class,'fileUpload']);
+        Route::delete('files/{fileId}',[AccountController::class,'fileDestroy']);
+        // user addresses managment
         Route::resource('address',AddressController::class);
         //shopping cart
         Route::resource('shopping-cart',ShoppingCartController::class);
@@ -57,27 +67,26 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     });
     //users managment
     Route::resource('users', \App\Http\Controllers\API\Admin\User\UserController::class);
-
+    // product comments list,status update,delete
     Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
-    //admin products
+    //admin panel products managment
     Route::resource('products',\App\Http\Controllers\API\Admin\Product\ProductController::class);
-    //admin product images
+    //admin panel product images
     Route::post('products/image',[ProductImageController::class,'store']);
     Route::delete('products/image/{id}',[ProductImageController::class,'destroy']);
-    //admin categories
+    //admin categories managment
     Route::resource('categories',\App\Http\Controllers\API\Admin\Category\CategoryController::class);
-    //admin product comments
+    //admin products comments
     Route::get('products/{id}/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'getProductComments']);
 
 
-    Route::get('test-data',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'index']);
 });
-//categories
+//user panel categories
 Route::get('categories',[CategoryController::class,'index']);
-//products
+//user panel products
 Route::get('products',[ProductController::class,'index']);
 Route::get('products/{product_id}',[ProductController::class,'show']);
-//products comments
+//user panel products comments
 Route::get('products/{id}/comments',[CommentController::class,'index']);
 
 

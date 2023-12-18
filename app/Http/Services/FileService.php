@@ -50,7 +50,7 @@ class FileService
 
         $fileRecord = File::create([
             'file_name' => $fileName,
-            'path' => $path,
+            'file_path' => $path,
             'user_id' => Auth::user()->id,
             'file_type' => $file_type,
             'content_type' =>$content_type
@@ -62,7 +62,7 @@ class FileService
     {
         $deleteItem =  File::find($fileId);
         if ($deleteItem){
-            $fileFullPath = self::fileDirectory . '/' . $deleteItem->name;
+            $fileFullPath = self::fileDirectory . '/' . $deleteItem->file_name;
             $deleted = $deleteItem->delete();
             Storage::delete($fileFullPath);
             if($deleted){ return true;} else return false;
@@ -74,7 +74,7 @@ class FileService
     {
         $deleteItem =  File::find($imageId);
         if ($deleteItem){
-            $fileFullPath = self::userImageDirectory . '/' . $deleteItem->name;
+            $fileFullPath = self::userImageDirectory . '/' . $deleteItem->file_name;
             $deleteItem->delete();
             Storage::delete($fileFullPath);
             return true;

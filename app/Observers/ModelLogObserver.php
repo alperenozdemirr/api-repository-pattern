@@ -23,11 +23,11 @@ class ModelLogObserver
      */
     protected function getModelName(Model $model)
     {
-        $modelName = get_class($model);
+        $modelName = new \ReflectionClass($model);
+        /*$modelName = get_class($model);
         $explodedClassName = explode('\\', $modelName);
-        $shortClassName = end($explodedClassName);
-
-        return $shortClassName;
+        $shortClassName = end($explodedClassName);*/
+        return $modelName->getShortName();
     }
 
     /**

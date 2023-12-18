@@ -19,6 +19,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $guarded = [];
     protected $fillable = [
         'name',
         'email',
@@ -42,7 +43,12 @@ class User extends Authenticatable
 
     public function image(): HasOne
     {
-        return $this->hasOne(File::class,'id','user_id');
+        return $this->hasOne(File::class,'user_id','id');
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(File::class,'user_id','id');
     }
 
     public function addresses(): HasMany

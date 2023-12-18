@@ -7,7 +7,7 @@ use App\Enums\FileType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class FileRequest extends FormRequest
+class ImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:pdf|max:4096',
+            'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'file_type' => ['nullable|string|max:255',new Enum(FileType::class)],
             'content_type' => ['nullable|string|max:255',new Enum(ContentType::class)],
         ];
