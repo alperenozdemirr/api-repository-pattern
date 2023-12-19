@@ -6,13 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Http\Resources\User\UserResource;
+use App\Jobs\NewUserMailJob;
+use App\Mail\NewUserMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
 
+    /**
+     * @param AuthRegisterRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function register(AuthRegisterRequest $request){
         //user create
         $user = User::create([
@@ -20,9 +28,18 @@ class AuthController extends Controller
             'email' => $request['email'],
             'password' => bcrypt($request['password'])
         ]);
-        return response(['message'=>'user create successfully.','users'=>UserResource::make($user)], 201);
+        if ($user){
+            dispatch(new NewUserMailJob($request['name'], $request['email']));
+            return response(['message'=>'user create successfully.','users'=>UserResource::make($user)], 201);
+        }
+        return response(['error'=>'Error occurred while processing the registration. Please check your information.'], 201);
+
     }
 
+    /**
+     * @param AuthLoginRequest $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function login(AuthLoginRequest $request) {
 
         // Check email
@@ -38,6 +55,10 @@ class AuthController extends Controller
         return response(['message'=>'user create successfully.','users'=>UserResource::make($user),'token'=>$token], 201);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function logout(Request $request) {
         auth()->user()->tokens()->delete();
         return response(['logout'=>'logged out'], 201);
