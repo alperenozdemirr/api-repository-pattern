@@ -9,6 +9,7 @@ use App\Http\Controllers\API\User\Category\CategoryController;
 use App\Http\Controllers\API\User\Product\CommentController;
 use App\Http\Controllers\API\User\Product\ProductController;
 use App\Http\Controllers\API\User\Account\AccountController;
+use App\Http\Controllers\API\User\Order\OrderController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -53,6 +54,10 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
         Route::get('favorites',[FavoriteController::class,'index']);
         Route::post('favorites',[FavoriteController::class,'store']);
         Route::delete('favorites/{id}',[FavoriteController::class,'destroy']);
+
+        Route::get('orders',[OrderController::class,'index']);
+        Route::post('orders',[OrderController::class,'store']);
+        Route::get('orders/{orderId}',[OrderController::class,'show']);
 
     });
     Route::post('products/comments',[CommentController::class,'store']);

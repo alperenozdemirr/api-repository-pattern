@@ -22,7 +22,6 @@ class ShoppingCartService
             $this->totalPrice += $basket->amount * $basket->product->discount_price;
         }
         $resultTotalPrice = floatval($this->totalPrice);
-
         return  $resultTotalPrice;
     }
 
