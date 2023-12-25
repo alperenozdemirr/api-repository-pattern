@@ -17,7 +17,7 @@ class OrderDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'product' => ProductResource::make($this->product),
+            'product' => ProductResource::make($this->products),
             'product_price' => $this->product_price,
             'product_amount' => $this->product_amount,
         ];

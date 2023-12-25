@@ -8,6 +8,7 @@ use App\Http\Requests\User\ShoppingCartRequest;
 use App\Http\Resources\Public\ShoppingCartResource;
 use App\Http\Services\ShoppingCartService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
 {
@@ -29,7 +30,7 @@ class ShoppingCartController extends Controller
      */
     public function index()
     {
-        $items= $this->repository->all();
+        $items= $this->repository->filter('user_id',Auth::user()->id);
         if($items){
             $data['itemAmount'] = $this->shoppingCartService->getTotalProductAmount();
             $data['totalPrice'] = $this->shoppingCartService->getTotalPrice();

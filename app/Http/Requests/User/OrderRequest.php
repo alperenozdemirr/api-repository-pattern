@@ -23,7 +23,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'address_id' => 'required|integer',
-            'invoice_address_id' => 'required|integer',
+            'invoice_address_id' => 'sometimes|integer',
         ];
     }
 }

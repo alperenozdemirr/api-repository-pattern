@@ -22,7 +22,10 @@ class OrderRepository extends BaseRepository
         parent::__construct($model);
     }
 
-
+    /**
+     * @param array $data
+     * @return void
+     */
     protected function validateExistence(array $data){
         $basketCount = ShoppingCart::where('user_id',Auth::user()->id)->count();
         if ($basketCount == 0) {
@@ -33,7 +36,7 @@ class OrderRepository extends BaseRepository
             );
         }
         $address = Address::find($data['address_id']);
-        $invoice_address = Address::find($data['invoice_address_id']);
+
         if (empty($address)) {
             throw new HttpResponseException(
                 response()->json(['address' => [
@@ -41,13 +44,18 @@ class OrderRepository extends BaseRepository
                 ]], 422)
             );
         }
-        if (empty($invoice_address)) {
-            throw new HttpResponseException(
-                response()->json(['invoice_address' => [
-                    "This invoice with code ". $data['invoice_address_id'] ." was not found"
-                ]], 422)
-            );
+
+        if(isset($data['invoice_address_id'])){
+            $invoice_address = Address::find($data['invoice_address_id']);
+            if (empty($invoice_address)) {
+                throw new HttpResponseException(
+                    response()->json(['invoice_address' => [
+                        "This invoice with code ". $data['invoice_address_id'] ." was not found"
+                    ]], 422)
+                );
+            }
         }
+
     }
 
     public function create($data){
@@ -57,6 +65,9 @@ class OrderRepository extends BaseRepository
         $data['product_amount'] = $this->shoppingCartService->getTotalProductAmount();
         $data['total_price'] = $totalPrice + $this->shipping_cost;
         $data['shipping_cost'] = $this->shipping_cost;
+
+        if (!isset($data['invoice_address_id']))  $data['invoice_address_id'] = $data['address_id'];
+
         return parent::create($data);
     }
 
