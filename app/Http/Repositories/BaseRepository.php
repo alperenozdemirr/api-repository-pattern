@@ -3,6 +3,7 @@ namespace App\Http\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 
 class BaseRepository implements RepositoryInterface
 {
@@ -71,6 +72,25 @@ class BaseRepository implements RepositoryInterface
         $item = $this->model->find($id);
         return $item->delete();
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function authorizedDelete($id){
+         $this->validateExistenceId($id);
+         $item = $this->model->find($id);
+         if ($item->user_id == Auth::user()->id){
+             return $item->delete();
+         } else {
+             throw new HttpResponseException(
+                 response()->json(['error' => [
+                     "Unauthorized to delete this data."
+                 ]], 403)
+             );
+         }
+    }
+
 
     /**
      * @param $id

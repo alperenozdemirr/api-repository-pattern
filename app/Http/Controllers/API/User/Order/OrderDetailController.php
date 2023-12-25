@@ -35,13 +35,4 @@ class OrderDetailController extends Controller
             return response()->json(false,422);
         }
     }
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 }

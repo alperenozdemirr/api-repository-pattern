@@ -19,6 +19,8 @@ class OrderInvoiceMail extends Mailable
     /**
      * @param $products
      * @param $data
+     * @param $address
+     * @param $invoice
      */
     public function __construct($products, $data, $address, $invoice)
     {
