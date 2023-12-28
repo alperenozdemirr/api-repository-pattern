@@ -58,6 +58,10 @@ class OrderRepository extends BaseRepository
 
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function create($data){
         $this->validateExistence($data);
         $totalPrice = $this->shoppingCartService->getTotalPrice();

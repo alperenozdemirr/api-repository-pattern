@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\OrderDetailRepository;
 use App\Http\Requests\User\OrderDetailRequest;
 use App\Http\Resources\User\OrderDetailResource;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class OrderDetailController extends Controller
@@ -15,17 +16,11 @@ class OrderDetailController extends Controller
     {
         $this->repository = $repository;
     }
-    public function index($orderId)
-    {
-        $items= $this->repository->filter('order_id',$orderId);
-        if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => OrderDetailResource::collection($items)],200);
-        }else{
-            return response()->json(['message' => 'The item could not be found'],404);
-        }
-    }
 
-
+    /**
+     * @param $orderId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create($orderId)
     {
         $item =  $this->repository->create($orderId);

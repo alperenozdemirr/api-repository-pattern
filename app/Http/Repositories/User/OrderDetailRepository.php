@@ -22,6 +22,10 @@ class OrderDetailRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     protected function validateExistenceId($id){
         $order = Order::find($id);
         if (empty($order)) {
@@ -32,6 +36,12 @@ class OrderDetailRepository extends BaseRepository
             );
         }
     }
+
+    /**
+     * @param $productId
+     * @param $amount
+     * @return void
+     */
     protected function checkStock($productId,$amount){
         $product = Product::find($productId);
 
@@ -51,8 +61,10 @@ class OrderDetailRepository extends BaseRepository
         }
     }
 
-
-
+    /**
+     * @param $orderId
+     * @return bool
+     */
     public function create($orderId)
     {
         $this->validateExistenceId($orderId);
