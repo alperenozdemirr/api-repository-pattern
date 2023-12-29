@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BaseRepository implements RepositoryInterface
 {
+    protected $isAutorized;
 
     public function __construct(Model $model)
     {
@@ -68,29 +69,31 @@ class BaseRepository implements RepositoryInterface
      * @return mixed
      */
     public function delete($id){
+        if((!empty($this->isAutorized)) && ($this->isAutorized == true)){
+            $item = $this->model->find($id);
+            return $item->delete();
+        }
         $this->validateExistenceId($id);
         $item = $this->model->find($id);
         return $item->delete();
     }
 
-    /**
-     * @param $id
-     * @return mixed
-     */
-    public function authorizedDelete($id){
-         $this->validateExistenceId($id);
-         $item = $this->model->find($id);
-         if ($item->user_id == Auth::user()->id){
-             return $item->delete();
-         } else {
-             throw new HttpResponseException(
-                 response()->json(['error' => [
-                     "Unauthorized to delete this data."
-                 ]], 403)
-             );
-         }
+    public function authorized($id){
+        $this->validateExistenceId($id);
+        $item = $this->model->find($id);
+        if ($item){
+            if (!empty($item) && $item->user_id == Auth::user()->id)
+            {
+                $this->isAutorized = true;
+                return $this;
+            }
+            throw new HttpResponseException(
+                response()->json(['error' => [
+                    "Unauthorized to delete this data."
+                ]], 401)
+            );
+        }
     }
-
 
     /**
      * @param $id
