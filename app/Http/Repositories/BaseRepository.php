@@ -89,7 +89,7 @@ class BaseRepository implements RepositoryInterface
             }
             throw new HttpResponseException(
                 response()->json(['error' => [
-                    "Unauthorized to delete this data."
+                    "Unauthorized access to this data."
                 ]], 401)
             );
         }

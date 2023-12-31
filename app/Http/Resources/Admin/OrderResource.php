@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\Admin;
 
 use App\Http\Resources\Public\AddressResource;
 use App\Http\Resources\Public\OrderDetailResource;
@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user' => UserResource::make($this->user),
             'product_amount' => $this->product_amount,
             'total_price' => $this->total_price,
             'shipment_status' => $this->shipment_status,

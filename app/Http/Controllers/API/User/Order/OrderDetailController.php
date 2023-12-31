@@ -4,10 +4,6 @@ namespace App\Http\Controllers\API\User\Order;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\OrderDetailRepository;
-use App\Http\Requests\User\OrderDetailRequest;
-use App\Http\Resources\User\OrderDetailResource;
-use App\Models\Order;
-use Illuminate\Http\Request;
 
 class OrderDetailController extends Controller
 {

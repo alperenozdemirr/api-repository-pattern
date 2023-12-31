@@ -83,7 +83,10 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::resource('categories',\App\Http\Controllers\API\Admin\Category\CategoryController::class);
     //admin products comments
     Route::get('products/{id}/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'getProductComments']);
-
+    //admin orders
+    Route::get('orders',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'index']);
+    Route::get('orders/{orderId}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'show']);
+    Route::put('orders/{orderId}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'update']);
 
 });
 //user panel categories
