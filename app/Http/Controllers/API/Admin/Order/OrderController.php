@@ -23,11 +23,16 @@ class OrderController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index($type = null)
     {
-        $items= $this->repository->filter();
+        $items= $this->repository->list($type);
+        $orderCount = $items->count();
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => OrderResource::collection($items)],200);
+            return response()->json([
+                'message' => 'Items have been listed successfully',
+                'total_count' => $orderCount,
+                'items' => OrderResource::collection($items),
+            ],200);
         }
         return response()->json(['message' => 'The item could not be found'],404);
     }

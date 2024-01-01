@@ -19,6 +19,19 @@ class OrderRepository extends BaseRepository
     }
 
     /**
+     * @param $type
+     * @return mixed
+     */
+    public function list($type = null)
+    {
+            $allowedStatuses = ShipmentStatus::toValues();
+            if ($type && in_array(strtolower($type),$allowedStatuses)){
+                return parent::filter('shipment_status', strtolower($type));
+            }
+        return parent::filter();
+    }
+
+    /**
      * @param $id
      * @param array $data
      * @return bool|mixed
@@ -44,9 +57,6 @@ class OrderRepository extends BaseRepository
             $mailData['shipment_status'] = ShipmentStatus::SHIPPED;
             dispatch(new OrderCargoMailJob($email,$mailData));
         }
-
-
-
         return parent::update($id, $data);
     }
 }
