@@ -19,8 +19,8 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'email' => $this->email,
             'name' => $this->name,
-            'phone' => $this->phone,
-            'image' => FileResource::make($this->whenLoaded('image')) ?? null,
+            'phone' => $this->phone ?? null,
+            'image' => $this->image->file_path ?? null,
             'status' => $this->status,
             'type' => $this->type,
         ];

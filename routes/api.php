@@ -70,6 +70,10 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::get('test',function (){
        return response()->json(['message' => 'admin test success']);
     });
+    //admin account
+    Route::get('account',[\App\Http\Controllers\API\Admin\Account\AccountController::class,'index']);
+    Route::put('account',[\App\Http\Controllers\API\Admin\Account\AccountController::class,'update']);
+    Route::post('account/image',[\App\Http\Controllers\API\Admin\Account\AccountController::class,'imageChange']);
     //users managment
     Route::resource('users', \App\Http\Controllers\API\Admin\User\UserController::class);
     // product comments list,status update,delete
