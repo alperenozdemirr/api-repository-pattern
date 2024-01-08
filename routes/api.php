@@ -91,7 +91,10 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::get('orders/{type?}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'index']);
     Route::get('orders/{orderId}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'show']);
     Route::put('orders/{orderId}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'update']);
-
+    //general settings
+    Route::prefix('general')->group(function (){
+        Route::put('settings',[\App\Http\Controllers\API\Admin\Setting\GeneralSettingController::class,'update']);
+    });
 });
 //user panel categories
 Route::get('categories',[CategoryController::class,'index']);
