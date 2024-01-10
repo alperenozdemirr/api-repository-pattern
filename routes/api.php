@@ -95,6 +95,9 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::prefix('general')->group(function (){
         Route::put('settings',[\App\Http\Controllers\API\Admin\Setting\GeneralSettingController::class,'update']);
     });
+    Route::prefix('dashboard')->group(function (){
+        Route::get('analysis',[\App\Http\Controllers\API\Admin\Dashboard\DashboardController::class,'index']);
+    });
 });
 //user panel categories
 Route::get('categories',[CategoryController::class,'index']);
