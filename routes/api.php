@@ -10,6 +10,7 @@ use App\Http\Controllers\API\User\Product\CommentController;
 use App\Http\Controllers\API\User\Product\ProductController;
 use App\Http\Controllers\API\User\Account\AccountController;
 use App\Http\Controllers\API\User\Order\OrderController;
+use App\Http\Controllers\API\Admin\Dashboard\LogController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -97,6 +98,8 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     });
     Route::prefix('dashboard')->group(function (){
         Route::get('analysis',[\App\Http\Controllers\API\Admin\Dashboard\DashboardController::class,'index']);
+        Route::get('logs',[LogController::class,'index']);
+        Route::post('logs/filter',[LogController::class,'filter']);
     });
 });
 //user panel categories

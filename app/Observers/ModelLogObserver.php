@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use ReflectionClass;
 
 class ModelLogObserver
 {
@@ -19,14 +20,11 @@ class ModelLogObserver
 
     /**
      * @param Model $model
-     * @return false|string
+     * @return string
      */
     protected function getModelName(Model $model)
     {
-        $modelName = new \ReflectionClass($model);
-        /*$modelName = get_class($model);
-        $explodedClassName = explode('\\', $modelName);
-        $shortClassName = end($explodedClassName);*/
+        $modelName = new ReflectionClass($model);
         return $modelName->getShortName();
     }
 
@@ -37,10 +35,11 @@ class ModelLogObserver
      */
     protected function logActivity(Model $model, string $message)
     {
+        $changes = $model->getChanges();
         activity()
             ->performedOn($model)
             ->causedBy(Auth::user())
-            //->withProperties(['action' => $this->getModelName($model)])
+            ->withProperties(['changes' => $changes])
             ->inLog($this->getModelName($model))
             ->log($message);
     }
