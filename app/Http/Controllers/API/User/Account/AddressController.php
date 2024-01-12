@@ -71,7 +71,7 @@ class AddressController extends Controller
      */
     public function update(AddressRequest $request, $id)
     {
-        $item = $this->repository->update($id, $request->safe()->all());
+        $item = $this->repository->authorized($id)->update($id, $request->safe()->all());
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => AddressResource::make($item)],200);
         } else {

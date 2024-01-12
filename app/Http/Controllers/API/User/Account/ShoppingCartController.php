@@ -61,7 +61,7 @@ class ShoppingCartController extends Controller
      */
     public function update($id, ShoppingCartRequest $request)
     {
-            $item = $this->repository->update($id, $request->safe()->all());
+            $item = $this->repository->authorized($id)->update($id, $request->safe()->all());
             if($item){
                 return response()->json(['message' => 'The item has been successfully updated.','item' => ShoppingCartResource::make($item)],200);
 
@@ -87,7 +87,7 @@ class ShoppingCartController extends Controller
      */
     public function amountIncrement($id)
     {
-        $item = $this->repository->amountIncrement($id);
+        $item = $this->repository->authorized($id)->amountIncrement($id);
         if($item){
             return response()->json(['message' => 'Items have been listed successfully','item' => ShoppingCartResource::make($item)],200);
         }
@@ -99,7 +99,7 @@ class ShoppingCartController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function amountDecrement($id){
-        $item = $this->repository->amountDecrement($id);
+        $item = $this->repository->authorized($id)->amountDecrement($id);
         if($item === true){
             return response()->json(['message' => 'Items have been item deleted'],204);
         } elseif($item){

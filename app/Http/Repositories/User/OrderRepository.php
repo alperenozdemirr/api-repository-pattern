@@ -2,6 +2,7 @@
 namespace App\Http\Repositories\User;
 
 use App\Http\Repositories\BaseRepository;
+use App\Http\Services\GeneralSettingService;
 use App\Http\Services\ShoppingCartService;
 use App\Models\Address;
 use App\Models\Order;
@@ -13,12 +14,14 @@ class OrderRepository extends BaseRepository
 {
     protected $shipping_cost = 20.00;
     protected $shoppingCartService = null;
-    public function __construct(Order $model = null, ShoppingCartService $shoppingCartService)
+    protected $generalSettingService = null;
+    public function __construct(Order $model = null, ShoppingCartService $shoppingCartService, GeneralSettingService $generalSettingService)
     {
         if($model === null) {
             $model = new Order();
         }
         $this->shoppingCartService = $shoppingCartService;
+        $this->generalSettingService = $generalSettingService;
         parent::__construct($model);
     }
 
@@ -27,6 +30,13 @@ class OrderRepository extends BaseRepository
      * @return void
      */
     protected function validateExistence(array $data){
+        if (empty($this->generalSettingService->getShippedCost())){
+            throw new HttpResponseException(
+                response()->json(['shipped_cost' => [
+                    "Systemic missing data: Undetermined shipping cost."
+                ]], 422)
+            );
+        }
         $basketCount = ShoppingCart::where('user_id',Auth::user()->id)->count();
         if ($basketCount == 0) {
             throw new HttpResponseException(
@@ -67,8 +77,8 @@ class OrderRepository extends BaseRepository
         $totalPrice = $this->shoppingCartService->getTotalPrice();
         $data['user_id'] = Auth::user()->id;
         $data['product_amount'] = $this->shoppingCartService->getTotalProductAmount();
-        $data['total_price'] = $totalPrice + $this->shipping_cost;
-        $data['shipping_cost'] = $this->shipping_cost;
+        $data['total_price'] = $totalPrice + $this->generalSettingService->getShippedCost();
+        $data['shipping_cost'] = $this->generalSettingService->getShippedCost();
 
         if (!isset($data['invoice_address_id']))  $data['invoice_address_id'] = $data['address_id'];
 

@@ -29,6 +29,7 @@ class ShoppingCartService
         $this->itemAmount = $this->baskets->where('user_id', Auth::user()->id)->distinct('product_id')->count();
         return $this->itemAmount;
     }
+
 }
 
 

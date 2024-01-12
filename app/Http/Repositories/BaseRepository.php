@@ -35,11 +35,11 @@ class BaseRepository implements RepositoryInterface
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|mixed
+     * @return mixed
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->model->orderByDesc('id')->get();
     }
 
     /**
@@ -112,9 +112,9 @@ class BaseRepository implements RepositoryInterface
     public function filter($column = null, $condition = null)
     {
         if ($column == null && $condition == null){
-            return $this->model->all();
+            return $this->model->orderByDesc('id')->paginate(20);
         }else{
-            return $this->model->where($column, $condition)->get();
+            return $this->model->where($column, $condition)->orderByDesc('id')->paginate(20);
         }
 
     }

@@ -21,7 +21,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $items= $this->repository->all();
+        $items= $this->repository->filter();
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)],200);
         }else{
