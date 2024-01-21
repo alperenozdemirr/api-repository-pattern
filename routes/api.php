@@ -37,6 +37,8 @@ Route::group(['prefix' => 'auth','middleware' => ['auth:sanctum','user']],functi
     });
     //accounts
     Route::prefix('account')->group(function (){
+        //change password
+        Route::post('password/change',[AuthController::class,'changePassword']);
         //user panel account information
         Route::get('information',[AccountController::class,'index']);
         Route::put('information',[AccountController::class,'update']);
@@ -74,7 +76,12 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     //admin account
     Route::get('account',[\App\Http\Controllers\API\Admin\Account\AccountController::class,'index']);
     Route::put('account',[\App\Http\Controllers\API\Admin\Account\AccountController::class,'update']);
-    Route::post('account/image',[\App\Http\Controllers\API\Admin\Account\AccountController::class,'imageChange']);
+    Route::prefix('account')->group(function (){
+        //admin account image
+        Route::post('image',[\App\Http\Controllers\API\Admin\Account\AccountController::class,'imageChange']);
+        //admin account change password
+        Route::post('password/change',[AuthController::class,'changePassword']);
+    });
     //users managment
     Route::resource('users', \App\Http\Controllers\API\Admin\User\UserController::class);
     // product comments list,status update,delete
