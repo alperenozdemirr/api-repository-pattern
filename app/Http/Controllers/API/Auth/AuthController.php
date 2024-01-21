@@ -5,16 +5,13 @@ namespace App\Http\Controllers\API\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
-use App\Http\Requests\Public\PasswordRequest;
+use App\Http\Requests\Auth\PasswordRequest;
 use App\Http\Resources\User\UserResource;
 use App\Jobs\NewUserMailJob;
-use App\Mail\NewUserMail;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {

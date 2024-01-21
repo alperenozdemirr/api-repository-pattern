@@ -79,9 +79,9 @@ class DashboardService
           'totalCount' =>$totalCount,
           'newOrderCount' => $newOrderCount,
           'beingProcessedCount' => $beingProcessedCount,
-            'shippedCount' => $shippedCount,
-            'deliveredCount' => $deliveredCount,
-            'cancelledCount' => $cancelledCount,
+          'shippedCount' => $shippedCount,
+          'deliveredCount' => $deliveredCount,
+          'cancelledCount' => $cancelledCount,
         ];
     }
 
