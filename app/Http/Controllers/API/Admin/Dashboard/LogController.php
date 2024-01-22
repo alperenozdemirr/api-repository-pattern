@@ -33,14 +33,13 @@ class LogController extends Controller
             $log = Activity::paginate(25);
         } else {
             $log = Activity::when($request->filled('operation_name'), function ($query) use ($request) {
-                return $query->where('log_name', $request->input('operation_name'));
-                })->when($request->filled('operation_type'), function ($query) use ($request) {
-                    return $query->where('description', $request->input('operation_type'));
-                })
-                ->when($request->filled('user'), function ($query) use ($request) {
+                return $query->where('log_name', 'like', '%' . $request->input('operation_name') . '%');
+            })->when($request->filled('operation_type'), function ($query) use ($request) {
+                    return $query->where('description', 'like', '%' . $request->input('operation_type') . '%');
+            })->when($request->filled('user'), function ($query) use ($request) {
                     return $query->where('causer_id', $request->input('user'));
-                })
-                ->paginate(25);
+            })
+            ->paginate(25);
         }
         if ($log){
          return  response()->json([
