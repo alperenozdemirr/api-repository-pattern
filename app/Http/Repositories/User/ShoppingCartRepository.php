@@ -20,6 +20,10 @@ class ShoppingCartRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     protected function validateExistence(array $data){
         $item = Product::find($data['product_id']);
         $stock = $item->stock;
@@ -39,6 +43,10 @@ class ShoppingCartRepository extends BaseRepository
         }
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     protected function basketValidatedExistence($id){
         $basket = $this->model->find($id);
         if (empty($basket)) {
@@ -49,6 +57,11 @@ class ShoppingCartRepository extends BaseRepository
             );
         }
     }
+
+    /**
+     * @param array $data
+     * @return ShoppingCartResource
+     */
     public function create(array $data)
     {
         $this->validateExistence($data);
@@ -64,6 +77,11 @@ class ShoppingCartRepository extends BaseRepository
         return new ShoppingCartResource($createdBasket);
     }
 
+    /**
+     * @param $id
+     * @param array $data
+     * @return bool|mixed
+     */
     public function update($id, array $data)
     {
         $this->validateExistence($data);
@@ -71,6 +89,10 @@ class ShoppingCartRepository extends BaseRepository
         return parent::update($id, $data);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function amountIncrement($id){
         $this->basketValidatedExistence($id);
         $basket =  $this->model->find($id);
@@ -78,6 +100,10 @@ class ShoppingCartRepository extends BaseRepository
         return $basket;
     }
 
+    /**
+     * @param $id
+     * @return true
+     */
     public function amountDecrement($id){
         $this->basketValidatedExistence($id);
         $basket =  $this->model->find($id);

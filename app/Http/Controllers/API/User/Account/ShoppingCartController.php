@@ -32,13 +32,11 @@ class ShoppingCartController extends Controller
     {
         $items= $this->repository->filter('user_id',Auth::user()->id);
         if($items){
-            $data['itemAmount'] = $this->shoppingCartService->getTotalProductAmount();
-            $data['totalPrice'] = $this->shoppingCartService->getTotalPrice();
             return response()->json([
                 'message' => 'Items have been listed successfully',
                 'items' => ShoppingCartResource::collection($items),
-                'item_amount' => $data['itemAmount'],
-                'total_price' => $data['totalPrice'],
+                'item_amount' => $this->shoppingCartService->getTotalProductAmount(),
+                'total_price' => $this->shoppingCartService->getTotalPrice(),
             ],200);
         }
         return response()->json(['message' => 'The item could not be found'], 404);
@@ -61,10 +59,9 @@ class ShoppingCartController extends Controller
      */
     public function update($id, ShoppingCartRequest $request)
     {
-            $item = $this->repository->authorized($id)->update($id, $request->safe()->all());
-            if($item){
-                return response()->json(['message' => 'The item has been successfully updated.','item' => ShoppingCartResource::make($item)],200);
-
+        $item = $this->repository->authorized($id)->update($id, $request->safe()->all());
+        if($item){
+            return response()->json(['message' => 'The item has been successfully updated.','item' => ShoppingCartResource::make($item)],200);
             } else return response()->json(['error' => 'Failed to updated the item'],422);
     }
 

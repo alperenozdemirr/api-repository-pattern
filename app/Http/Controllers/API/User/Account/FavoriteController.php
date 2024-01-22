@@ -7,6 +7,7 @@ use App\Http\Repositories\User\FavoriteRepository;
 use App\Http\Requests\User\FavoriteRequest;
 use App\Http\Resources\Public\FavoriteResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
@@ -25,9 +26,14 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        $items= $this->repository->index();
+        $items= $this->repository->filter('user_id',Auth::user()->id);
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully', 'items' => FavoriteResource::collection($items)],200);
+            return response()->json(
+                [
+                    'message' => 'Items have been listed successfully',
+                    'count' => $items->count(),
+                    'items' => FavoriteResource::collection($items),
+                ],200);
         }
         return response()->json(['message' => 'The item could not be found'], 404);
     }
@@ -51,7 +57,7 @@ class FavoriteController extends Controller
      */
     public function destroy($id)
     {
-        $item = $this->repository->delete($id);
+        $item = $this->repository->authorized($id)->delete($id);
         if ($item){
             return response()->json(null,204);
         }

@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 class AccountRepository extends BaseRepository
 {
     protected $fileService = null;
+
+    /**
+     * @param User|null $model
+     * @param FileService $fileService
+     */
     public function __construct(User $model = null, FileService $fileService)
     {
         if($model === null) {
@@ -19,6 +24,10 @@ class AccountRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    /**
+     * @param $data
+     * @return FileResource
+     */
     public function imageChange($data)
     {
         $user = $this->model->find(Auth::user()->id);

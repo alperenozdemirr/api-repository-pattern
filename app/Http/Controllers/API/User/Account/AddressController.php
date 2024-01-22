@@ -85,7 +85,7 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-         $item = $this->repository->delete($id);
+         $item = $this->repository->authorized($id)->delete($id);
         if($item){
             return response()->json(['message' => 'Items have been item deleted']);
         }

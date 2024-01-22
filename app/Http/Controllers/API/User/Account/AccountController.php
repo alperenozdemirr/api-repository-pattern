@@ -18,6 +18,11 @@ class AccountController extends Controller
 {
     protected $repository = null;
     protected $fileService = null;
+
+    /**
+     * @param AccountRepository $repository
+     * @param FileService $fileService
+     */
     public function __construct(AccountRepository $repository, FileService $fileService)
     {
         $this->repository = $repository;

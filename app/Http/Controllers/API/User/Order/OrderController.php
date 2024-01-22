@@ -27,7 +27,12 @@ class OrderController extends Controller
     {
         $items= $this->repository->filter('user_id',Auth::user()->id);
         if($items){
-            return response()->json(['message' => 'Items have been listed successfully','items' => OrderResource::collection($items)],200);
+            return response()->json(
+                [
+                    'message' => 'Items have been listed successfully',
+                    'count' => $items->count(),
+                    'items' => OrderResource::collection($items),
+                ],200);
         }
         return response()->json(['message' => 'The item could not be found'],404);
     }
@@ -40,7 +45,6 @@ class OrderController extends Controller
     public function store(OrderRequest $request, OrderDetailController $orderDetailController)
     {
         $item =  $this->repository->create($request->safe()->all());
-
         if($item){
             $orderDetailController->create($item->id);
             return response()->json(['message' => 'The item has been successfully created.','item' => new OrderResource($item)],201);

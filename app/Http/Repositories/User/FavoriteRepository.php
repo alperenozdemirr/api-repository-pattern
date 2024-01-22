@@ -19,13 +19,22 @@ class FavoriteRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    public function index(){
-        return parent::filter('user_id',Auth::user()->id);
-    }
+    /**
+     * @param array $data
+     * @return void
+     */
     protected function validateExistence(array $data){
-        $item = Product::find($data['product_id']);
-        $stock = $item->stock;
-        if (empty($item) && $stock != 0) {
+        $product = Product::find($data['product_id']);
+        $favoriteCheck = $this->model->where('product_id',$data['product_id'])->exists();
+        $stock = $product->stock;
+        if ($favoriteCheck) {
+            throw new HttpResponseException(
+                response()->json(['exists_item' => [
+                    "This product is available in your favourites"
+                ]], 422)
+            );
+        }
+        if (empty($product) && $stock != 0) {
             throw new HttpResponseException(
                 response()->json(['product' => [
                     "This product with code ". $data['product_id'] ." was not found"

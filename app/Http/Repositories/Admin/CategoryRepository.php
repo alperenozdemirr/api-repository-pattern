@@ -16,6 +16,10 @@ class CategoryRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     protected function validateExistence(array $data){
         if (!empty($data['parent_id']) && !is_null($data['parent_id'])) {
             $item = Category::find($data['parent_id']);
@@ -29,6 +33,10 @@ class CategoryRepository extends BaseRepository
         }
     }
 
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         $this->validateExistence($data);
@@ -36,6 +44,11 @@ class CategoryRepository extends BaseRepository
         return parent::create($data);
     }
 
+    /**
+     * @param $id
+     * @param array $data
+     * @return bool|mixed
+     */
     public function update($id, array $data)
     {
         $this->validateExistence($data);

@@ -18,6 +18,10 @@ class AddressRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     protected function validateExistence(array $data){
         $item = City::where('code',$data['city_code'])->first();
         if (empty($item)) {
@@ -28,6 +32,11 @@ class AddressRepository extends BaseRepository
             );
         }
     }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
     public function create(array $data)
     {
         $this->validateExistence($data);
@@ -36,6 +45,11 @@ class AddressRepository extends BaseRepository
         return parent::create($data);
     }
 
+    /**
+     * @param $id
+     * @param array $data
+     * @return bool|mixed
+     */
     public function update($id, array $data)
     {
         $this->validateExistence($data);

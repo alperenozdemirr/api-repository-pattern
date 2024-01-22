@@ -10,6 +10,11 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 class ProductRepository extends BaseRepository
 {
     protected $productImageService;
+
+    /**
+     * @param Product|null $model
+     * @param ProductImageService $productImageService
+     */
     public function __construct(Product $model = null, ProductImageService $productImageService)
     {
         if($model === null) {
@@ -19,6 +24,10 @@ class ProductRepository extends BaseRepository
         $this->productImageService = $productImageService;
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     protected function validateExistence(array $data){
         $item = Category::find($data['category_id']);
         if (empty($item)) {
@@ -41,6 +50,11 @@ class ProductRepository extends BaseRepository
         return parent::create($data);
     }
 
+    /**
+     * @param $id
+     * @param array $data
+     * @return bool|mixed
+     */
     public function update($id, array $data)
     {
         $this->validateExistence($data);
@@ -48,6 +62,10 @@ class ProductRepository extends BaseRepository
         return parent::update($id, $data);
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function delete($id)
     {
         $product = $this->model->find($id);
