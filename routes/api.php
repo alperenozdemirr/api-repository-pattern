@@ -114,6 +114,8 @@ Route::get('categories',[CategoryController::class,'index']);
 //user panel products
 Route::get('products',[ProductController::class,'index']);
 Route::get('products/{product_id}',[ProductController::class,'show']);
+//products search
+Route::get('products/search/{search}',[ProductController::class,'search']);
 //user panel products comments
 Route::get('products/{id}/comments',[CommentController::class,'index']);
 

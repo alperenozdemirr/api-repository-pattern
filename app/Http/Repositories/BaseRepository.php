@@ -122,5 +122,15 @@ class BaseRepository implements RepositoryInterface
         }
 
     }
+
+    /**
+     * @param $column
+     * @param $search
+     * @return mixed
+     */
+    public function search($column, $search = null)
+    {
+        return $this->model->where($column,'like','%'.$search.'%')->paginate(25);
+    }
 }
 ?>
