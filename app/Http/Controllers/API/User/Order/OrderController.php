@@ -46,8 +46,10 @@ class OrderController extends Controller
     {
         $item =  $this->repository->create($request->safe()->all());
         if($item){
-            $orderDetailController->create($item->id);
-            return response()->json(['message' => 'The item has been successfully created.','item' => new OrderResource($item)],201);
+            $orderDetails = $orderDetailController->create($item->id);
+            if ($orderDetails){
+                return response()->json(['message' => 'The item has been successfully created.','item' => new OrderResource($item)],201);
+            }
         }
         return response()->json(['error' => "Failed to created the item"],422);
     }
@@ -58,7 +60,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $items = $this->repository->find($id);
+        $items = $this->repository->authorized($id)->find($id);
         $items->load('order_details');
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => OrderResource::make($items)],200);

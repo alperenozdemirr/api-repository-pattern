@@ -56,7 +56,7 @@ class AddressController extends Controller
      */
     public function show($id)
     {
-        $item = $this->repository->get($id);
+        $item = $this->repository->authorized($id)->get($id);
         if($item){
             return response()->json(['message' => 'Items have been listed successfully','item' => AddressResource::make($item)],200);
         }else{

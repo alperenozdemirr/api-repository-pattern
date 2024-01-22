@@ -6,7 +6,6 @@ use App\Models\Product;
 
 class ProductRepository extends BaseRepository
 {
-
     public function __construct(Product $model = null)
     {
         if($model === null) {
@@ -14,6 +13,5 @@ class ProductRepository extends BaseRepository
         }
         parent::__construct($model);
     }
-
 }
 ?>

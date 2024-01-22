@@ -17,6 +17,10 @@ class ProductImageController extends Controller
         $this->productImageService = $productImageService;
     }
 
+    /**
+     * @param ProductImageRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(ProductImageRequest $request){
         $images = $request->file('name');
         $order = $request['image_order'];
@@ -28,6 +32,10 @@ class ProductImageController extends Controller
         return response()->json(['error' => 'Failed to created the item'],422);
     }
 
+    /**
+     * @param $imageId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($imageId){
         $delete = $this->productImageService->deleteFile($imageId);
         if($delete){

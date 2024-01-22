@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentRepository extends BaseRepository
 {
-
     public function __construct(Comment $model = null)
     {
         if($model === null) {

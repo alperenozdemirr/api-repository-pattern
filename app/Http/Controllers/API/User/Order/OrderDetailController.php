@@ -21,9 +21,9 @@ class OrderDetailController extends Controller
     {
         $item =  $this->repository->create($orderId);
         if($item){
-            return response()->json(true,201);
+            return true;
         } else {
-            return response()->json(false,422);
+            return false;
         }
     }
 }

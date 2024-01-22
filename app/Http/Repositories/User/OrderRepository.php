@@ -12,9 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderRepository extends BaseRepository
 {
-    protected $shipping_cost = 20.00;
     protected $shoppingCartService = null;
     protected $generalSettingService = null;
+
+    /**
+     * @param Order|null $model
+     * @param ShoppingCartService $shoppingCartService
+     * @param GeneralSettingService $generalSettingService
+     */
     public function __construct(Order $model = null, ShoppingCartService $shoppingCartService, GeneralSettingService $generalSettingService)
     {
         if($model === null) {

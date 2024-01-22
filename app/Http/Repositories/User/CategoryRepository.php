@@ -7,7 +7,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CategoryRepository extends BaseRepository
 {
-
     public function __construct(Category $model = null)
     {
         if($model === null) {

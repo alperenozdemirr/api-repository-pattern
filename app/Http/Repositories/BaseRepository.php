@@ -14,6 +14,10 @@ class BaseRepository implements RepositoryInterface
         $this->model = $model;
     }
 
+    /**
+     * @param $id
+     * @return void
+     */
     protected function validateExistenceId($id){
         $item = $this->model->find($id);
         if (empty($item)) {

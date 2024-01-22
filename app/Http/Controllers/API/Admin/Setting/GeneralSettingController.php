@@ -32,6 +32,10 @@ class GeneralSettingController extends Controller
 
     }
 
+    /**
+     * @param UpdateGeneralSettingRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdateGeneralSettingRequest $request){
         $item = $this->repository->updateV2($request->safe()->all());
 

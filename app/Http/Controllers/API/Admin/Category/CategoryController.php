@@ -18,6 +18,9 @@ class CategoryController extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $items= $this->repository->all();
