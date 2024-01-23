@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Repositories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
@@ -131,6 +132,16 @@ class BaseRepository implements RepositoryInterface
     public function search($column, $search = null)
     {
         return $this->model->where($column,'like','%'.$search.'%')->paginate(25);
+    }
+
+    /**
+     * @param $search
+     * @return mixed
+     */
+    public function searchByUser($search = null)
+    {
+        $userKeys = User::where('name','like','%'.$search.'%')->get('id');
+        return $this->model->whereIn('user_id',$userKeys)->paginate(25);
     }
 }
 ?>

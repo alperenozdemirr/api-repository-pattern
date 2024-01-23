@@ -4,9 +4,7 @@ namespace App\Http\Controllers\API\User\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\ProductRepository;
-use App\Http\Requests\Admin\ProductRequest;
 use App\Http\Resources\Public\ProductResource;
-use App\Models\Product;
 
 class ProductController extends Controller
 {

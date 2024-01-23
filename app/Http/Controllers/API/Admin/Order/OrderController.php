@@ -66,4 +66,18 @@ class OrderController extends Controller
         } else return response()->json(['error' => 'Failed to updated the item'],422);
     }
 
+    /**
+     * @param string $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function search(string $user)
+    {
+        $orders = $this->repository->searchByUser($user);
+        $message = "Found (". $orders->count() . ") results for the phrase '".$user."' in items";
+        if($orders){
+            return response()->json(['message' => $message,'items' => OrderResource::collection($orders)],200);
+        }
+        return response()->json(['message' => $message],404);
+    }
+
 }

@@ -85,5 +85,15 @@ class CommentController extends Controller
         }
     }
 
+    public function search(string $user)
+    {
+        $comments = $this->repository->searchByUser($user);
+        $message = "Found (". $comments->count() . ") results for the phrase '".$user."' in items";
+        if($comments){
+            return response()->json(['message' => $message,'items' => CommentResource::collection($comments)],200);
+        }
+        return response()->json(['message' => $message],404);
+    }
+
 
 }

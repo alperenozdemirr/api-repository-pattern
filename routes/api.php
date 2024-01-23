@@ -86,6 +86,8 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::resource('users', \App\Http\Controllers\API\Admin\User\UserController::class);
     // product comments list,status update,delete
     Route::resource('products/comments',\App\Http\Controllers\API\Admin\Product\CommentController::class);
+    //comments search by user
+    Route::get('products/comments/search/{user}',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'search']);
     //admin panel products managment
     Route::resource('products',\App\Http\Controllers\API\Admin\Product\ProductController::class);
     //admin panel product images
@@ -93,12 +95,15 @@ Route::group(['prefix' => 'auth/admin','middleware' => ['auth:sanctum','admin']]
     Route::delete('products/image/{id}',[ProductImageController::class,'destroy']);
     //admin categories managment
     Route::resource('categories',\App\Http\Controllers\API\Admin\Category\CategoryController::class);
+    //products search
+    Route::get('products/search/{search}',[\App\Http\Controllers\API\Admin\Product\ProductController::class,'search']);
     //admin products comments
     Route::get('products/{id}/comments',[\App\Http\Controllers\API\Admin\Product\CommentController::class,'getProductComments']);
     //admin orders
     Route::get('orders/{type?}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'index']);
     Route::get('orders/{orderId}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'show']);
     Route::put('orders/{orderId}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'update']);
+    Route::get('orders/search/{user}',[\App\Http\Controllers\API\Admin\Order\OrderController::class,'search']);
     //general settings
     Route::prefix('general')->group(function (){
         Route::put('settings',[\App\Http\Controllers\API\Admin\Setting\GeneralSettingController::class,'update']);
