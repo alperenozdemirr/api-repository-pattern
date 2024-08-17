@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User\Product;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\ProductRepository;
 use App\Http\Resources\Public\ProductResource;
@@ -23,9 +24,8 @@ class ProductController extends Controller
         $items= $this->repository->filter();
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)],200);
-        }else{
-            return response()->json(['message' => 'The item could not be found'],404);
         }
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -37,9 +37,8 @@ class ProductController extends Controller
         $item = $this->repository->get($id);
         if($item){
             return response()->json(['message' => 'Items have been listed successfully','item' => ProductResource::make($item)],200);
-        }else{
-            return response()->json(['message' => 'The item could not be found'],404);
         }
+        return ResponseHelper::forbidden();
     }
 
     /**

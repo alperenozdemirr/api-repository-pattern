@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\Dashboard;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LogFilterRequest;
 use Spatie\Activitylog\Models\Activity;
@@ -21,7 +22,7 @@ class LogController extends Controller
             ],200);
         }
 
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -47,6 +48,6 @@ class LogController extends Controller
              'log'=> $log
          ],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 }

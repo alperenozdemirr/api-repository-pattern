@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\Account;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\AccountRepository;
 use App\Http\Requests\Public\ImageRequest;
@@ -30,7 +31,7 @@ class AccountController extends Controller
         if($item){
             return response()->json(['message' => 'Items have been listed successfully','items' => UserResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found'],404);
+            return ResponseHelper::forbidden();
         }
     }
 
@@ -43,7 +44,7 @@ class AccountController extends Controller
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => UserResource::make($item)],200);
         } else {
-            return response()->json(['error' => 'Failed to updated the item'],422);
+            return ResponseHelper::failedUpdate();
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\User;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\UserRepository;
 use App\Http\Requests\Admin\UpdateUserRequest;
@@ -27,7 +28,7 @@ class UserController extends Controller
         if($items){
             return response()->json(['message' => 'Items have been listed successfully', 'items' => UserResource::collection($items)],200);
         }
-        return response()->json(['message' => 'The item could not be found'], 404);
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -38,10 +39,10 @@ class UserController extends Controller
     {
         $item = $this->repository->get($id);
         if($item){
-            activity()->log('asdasdasd');
+            activity()->log('log try');
             return response()->json(['message' => 'Items have been listed successfully','item' => UserResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found'],404);
+            return ResponseHelper::forbidden();
         }
     }
 
@@ -57,7 +58,7 @@ class UserController extends Controller
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => UserResource::make($item)],200);
 
-        } else return response()->json(['error' => 'Failed to updated the item'],422);
+        } else return ResponseHelper::failedUpdate();
     }
 
     /**
@@ -72,17 +73,17 @@ class UserController extends Controller
             if ($image) {
                 $imageDeleted = $this->fileService->fileDelete($image->id);
                 if (!$imageDeleted) {
-                    return response()->json(['error' => 'Failed to delete the image'], 400);
+                    return ResponseHelper::failedDelete();
                 }
             }
 
             $deleted = $user->delete();
             if ($deleted) {
                 return response()->json(['message' => 'User and its image have been deleted'], 204);
-            } else return response()->json(['error' => 'Failed to delete the item'], 400);
+            } else return ResponseHelper::failedDelete();
 
         } else {
-            return response()->json(['error' => 'The item could not be found'],400);
+            return ResponseHelper::forbidden();
         }
     }
 }

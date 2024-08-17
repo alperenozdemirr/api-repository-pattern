@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User\Order;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\OrderRepository;
 use App\Http\Requests\User\OrderRequest;
@@ -34,7 +35,7 @@ class OrderController extends Controller
                     'items' => OrderResource::collection($items),
                 ],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -51,7 +52,7 @@ class OrderController extends Controller
                 return response()->json(['message' => 'The item has been successfully created.','item' => new OrderResource($item)],201);
             }
         }
-        return response()->json(['error' => "Failed to created the item"],422);
+        return ResponseHelper::failedCreate();
     }
 
     /**

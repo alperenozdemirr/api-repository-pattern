@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\Product;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\ProductRepository;
 use App\Http\Requests\Admin\ProductRequest;
@@ -28,7 +29,7 @@ class ProductController extends Controller
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => ProductResource::collection($items)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found'],404);
+            return ResponseHelper::forbidden();
         }
     }
 
@@ -42,7 +43,7 @@ class ProductController extends Controller
         if($items){
             return response()->json(['message' => 'The item has been successfully created.','item' => new ProductResource($items)],201);
         } else {
-            return response()->json(['error' => 'Failed to created the item'],422);
+            return ResponseHelper::failedCreate();
         }
     }
 
@@ -56,7 +57,7 @@ class ProductController extends Controller
         if($item){
             return response()->json(['message' => 'Items have been listed successfully','item' => ProductResource::make($item)],200);
         }else{
-            return response()->json(['message' => 'The item could not be found'],404);
+            return ResponseHelper::forbidden();
         }
     }
 
@@ -71,7 +72,7 @@ class ProductController extends Controller
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => ProductResource::make($item)],200);
 
-        } else return response()->json(['error' => 'Failed to updated the item'],422);
+        } else return ResponseHelper::failedUpdate();
     }
 
     /**
@@ -83,10 +84,9 @@ class ProductController extends Controller
         $product = $this->repository->find($id);
         if($product){
             $this->repository->delete($id);
-            return response()->json(['message' => 'Items have been item deleted'],204);
-        }else{
-            return response()->json(['error' => 'Failed to delete the item'],400);
-        }
+            return ResponseHelper::successDeleted();
+
+        }else return ResponseHelper::failedDelete();
     }
 
     /**
