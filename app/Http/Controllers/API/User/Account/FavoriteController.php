@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User\Account;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\FavoriteRepository;
 use App\Http\Requests\User\FavoriteRequest;
@@ -35,7 +36,7 @@ class FavoriteController extends Controller
                     'items' => FavoriteResource::collection($items),
                 ],200);
         }
-        return response()->json(['message' => 'The item could not be found'], 404);
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -48,7 +49,7 @@ class FavoriteController extends Controller
         if ($item) {
             return response()->json(['message' => 'The item has been successfully created.', 'item' => new FavoriteResource($item)],201);
         }
-        return response()->json(['error' => 'Failed to create the item'],422);
+        return ResponseHelper::failedCreate();
     }
 
     /**
@@ -59,8 +60,8 @@ class FavoriteController extends Controller
     {
         $item = $this->repository->authorized($id)->delete($id);
         if ($item){
-            return response()->json(null,204);
+            return ResponseHelper::successDeleted();
         }
-        return response()->json(['error' => 'Failed to delete the item'],400);
+        return ResponseHelper::failedDelete();
     }
 }

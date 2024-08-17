@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\Order;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\OrderRepository;
 use App\Http\Requests\Admin\UpdateOrderRequest;
@@ -34,7 +35,7 @@ class OrderController extends Controller
                 'items' => OrderResource::collection($items),
             ],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -49,7 +50,7 @@ class OrderController extends Controller
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => OrderResource::make($items)],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -63,7 +64,7 @@ class OrderController extends Controller
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => OrderResource::make($item)],200);
 
-        } else return response()->json(['error' => 'Failed to updated the item'],422);
+        } else return ResponseHelper::failedUpdate();
     }
 
     /**

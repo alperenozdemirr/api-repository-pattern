@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\Dashboard;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\DashboardRepository;
 
@@ -28,6 +29,6 @@ class DashboardController extends Controller
         if($items){
             return response()->json(['message' => 'Item data have been listed successfully','Dashboard' => $items],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 }

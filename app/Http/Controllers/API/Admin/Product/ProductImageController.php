@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\Product;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductImageRequest;
 use App\Http\Resources\Public\ProductImageResource;
@@ -29,7 +30,7 @@ class ProductImageController extends Controller
         if($save){
             return response()->json(['message' => 'The item has been successfully created.','item' => ProductImageResource::collection($save)],201);
         }
-        return response()->json(['error' => 'Failed to created the item'],422);
+        return ResponseHelper::failedCreate();
     }
 
     /**
@@ -39,9 +40,9 @@ class ProductImageController extends Controller
     public function destroy($imageId){
         $delete = $this->productImageService->deleteFile($imageId);
         if($delete){
-            return response()->json(['message' => 'Items have been item deleted'],204);
+            return ResponseHelper::successDeleted();
         }
-        return response()->json(['error' => 'Failed to delete the item'],400);
+        return ResponseHelper::failedDelete();
 
     }
 

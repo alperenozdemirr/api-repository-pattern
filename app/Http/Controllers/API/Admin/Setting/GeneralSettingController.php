@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\Admin\Setting;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\Admin\GeneralSettingRepository;
 use App\Http\Requests\Admin\UpdateGeneralSettingRequest;
@@ -28,7 +29,7 @@ class GeneralSettingController extends Controller
         if($item){
             return response()->json(['message' => 'General Setting data have been listed successfully','items' => GeneralSettingResource::collection($item)],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
 
     }
 
@@ -42,6 +43,6 @@ class GeneralSettingController extends Controller
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => GeneralSettingResource::make($item)],200);
         }
-        return response()->json(['error' => 'Failed to updated the item'],422);
+        return ResponseHelper::failedUpdate();
     }
 }

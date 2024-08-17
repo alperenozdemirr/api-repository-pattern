@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User\Product;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\CommentRepository;
 use App\Http\Requests\User\CommentRequest;
@@ -25,9 +26,9 @@ class CommentController extends Controller
         $items= $this->repository->filter('product_id',$producId);
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => CommentResource::collection($items)],200);
-        }else{
-            return response()->json(['message' => 'The item could not be found'],404);
         }
+        return ResponseHelper::forbidden();
+
     }
 
     /**
@@ -39,8 +40,9 @@ class CommentController extends Controller
         $items =  $this->repository->create($request->safe()->all());
         if($items){
             return response()->json(['message' => 'The item has been successfully created.','item' => new CommentResource($items)],201);
-        } else {
-            return response()->json(['error' => 'Failed to created the item'],422);
+
         }
+        return ResponseHelper::failedCreate();
+
     }
 }

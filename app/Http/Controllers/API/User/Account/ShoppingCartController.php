@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User\Account;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\ShoppingCartRepository;
 use App\Http\Requests\User\ShoppingCartRequest;
@@ -39,7 +40,7 @@ class ShoppingCartController extends Controller
                 'total_price' => $this->shoppingCartService->getTotalPrice(),
             ],200);
         }
-        return response()->json(['message' => 'The item could not be found'], 404);
+        return ResponseHelper::forbidden();
     }
 
 
@@ -49,7 +50,7 @@ class ShoppingCartController extends Controller
         if ($item) {
             return response()->json(['message' => 'The item has been successfully created.', 'item' => $item],201);
         }
-        return response()->json(['error' => 'Failed to create the item'],422);
+        return ResponseHelper::failedCreate();
     }
 
     /**
@@ -62,7 +63,7 @@ class ShoppingCartController extends Controller
         $item = $this->repository->authorized($id)->update($id, $request->safe()->all());
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => ShoppingCartResource::make($item)],200);
-            } else return response()->json(['error' => 'Failed to updated the item'],422);
+            } else ResponseHelper::failedUpdate();
     }
 
     /**
@@ -73,9 +74,9 @@ class ShoppingCartController extends Controller
     {
         $item = $this->repository->authorized($id)->delete($id);
         if ($item){
-            return response()->json(['message' => 'Items have been item deleted'],204);
+            return ResponseHelper::successDeleted();
         }
-        return response()->json(['error' => 'Failed to delete the item'],400);
+        return ResponseHelper::failedDelete();
     }
 
     /**
@@ -88,7 +89,7 @@ class ShoppingCartController extends Controller
         if($item){
             return response()->json(['message' => 'Items have been listed successfully','item' => ShoppingCartResource::make($item)],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -98,10 +99,10 @@ class ShoppingCartController extends Controller
     public function amountDecrement($id){
         $item = $this->repository->authorized($id)->amountDecrement($id);
         if($item === true){
-            return response()->json(['message' => 'Items have been item deleted'],204);
+            return ResponseHelper::successDeleted();
         } elseif($item){
             return response()->json(['message' => 'Items have been listed successfully','item' => ShoppingCartResource::make($item)],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 }

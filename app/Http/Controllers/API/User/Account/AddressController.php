@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User\Account;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\AddressRepository;
 use App\Http\Requests\User\AddressRequest;
@@ -31,9 +32,8 @@ class AddressController extends Controller
         $items= $this->repository->filter('user_id',Auth::user()->id);
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => AddressResource::collection($items)],200);
-        }else{
-            return response()->json(['message' => 'The item could not be found'],404);
         }
+            return ResponseHelper::forbidden();
     }
 
     /**
@@ -45,9 +45,9 @@ class AddressController extends Controller
         $items =  $this->repository->create($request->safe()->all());
         if($items){
             return response()->json(['message' => 'The item has been successfully created.','item' => new AddressResource($items)],201);
-        } else {
-            return response()->json(['error' => 'Failed to created the item'],422);
         }
+        return ResponseHelper::failedCreate();
+
     }
 
     /**
@@ -59,9 +59,8 @@ class AddressController extends Controller
         $item = $this->repository->authorized($id)->get($id);
         if($item){
             return response()->json(['message' => 'Items have been listed successfully','item' => AddressResource::make($item)],200);
-        }else{
-            return response()->json(['message' => 'The item could not be found'],404);
         }
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -75,7 +74,7 @@ class AddressController extends Controller
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => AddressResource::make($item)],200);
         } else {
-            return response()->json(['error' => 'Failed to updated the item'],422);
+            return ResponseHelper::failedUpdate();
         }
     }
 
@@ -85,11 +84,11 @@ class AddressController extends Controller
      */
     public function destroy($id)
     {
-         $item = $this->repository->authorized($id)->delete($id);
+        $item = $this->repository->authorized($id)->delete($id);
         if($item){
-            return response()->json(['message' => 'Items have been item deleted']);
+            return ResponseHelper::successDeleted();
         }
-        return response()->json(['error' => 'Failed to delete the item'],400);
+        return ResponseHelper::failedDelete();
 
     }
 }

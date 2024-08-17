@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User\Account;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\User;
 use App\Http\Repositories\User\AccountRepository;
@@ -37,8 +38,8 @@ class AccountController extends Controller
         $items= $this->repository->find(Auth::user()->id);
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => UserResource::make($items)],200);
-
-        }else return response()->json(['message' => 'The item could not be found'],404);
+        }
+        return ResponseHelper::forbidden();
     }
 
     /**
@@ -51,7 +52,7 @@ class AccountController extends Controller
         if($item){
             return response()->json(['message' => 'The item has been successfully updated.','item' => UserResource::make($item)],200);
 
-        } else return response()->json(['error' => 'Failed to updated the item'],422);
+        } else return ResponseHelper::failedUpdate();
     }
 
     /**
