@@ -27,4 +27,9 @@ class Product extends Base
     {
         return $this->hasMany(ProductImage::class,'product_id','id');
     }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class,'product_id','id');
+    }
 }

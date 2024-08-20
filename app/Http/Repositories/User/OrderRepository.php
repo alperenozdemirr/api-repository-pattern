@@ -77,7 +77,8 @@ class OrderRepository extends BaseRepository
      * @param $data
      * @return mixed
      */
-    public function create($data){
+    public function create($data)
+    {
         $this->validateExistence($data);
         $totalPrice = $this->shoppingCartService->getTotalPrice();
         $data['user_id'] = Auth::user()->id;

@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\User\OrderRepository;
 use App\Http\Requests\User\OrderRequest;
 use App\Http\Resources\User\OrderResource;
+use App\Jobs\OrderJob;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -43,14 +45,15 @@ class OrderController extends Controller
      * @param OrderDetailController $orderDetailController
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(OrderRequest $request, OrderDetailController $orderDetailController)
+    public function store(OrderRequest $request)
     {
         $item =  $this->repository->create($request->safe()->all());
         if($item){
-            $orderDetails = $orderDetailController->create($item->id);
-            if ($orderDetails){
-                return response()->json(['message' => 'The item has been successfully created.','item' => new OrderResource($item)],201);
-            }
+            //$orderDetails = $orderDetailController->create($item->id);
+            dispatch(new OrderJob($item->id,Auth::user()->id));
+            //return response()->json(['message' => 'The item has been successfully created.','item' => new OrderResource($item)],201);
+            return response()->json(['message' => 'You will be notified when your order is completed'],201);
+
         }
         return ResponseHelper::failedCreate();
     }
@@ -66,6 +69,6 @@ class OrderController extends Controller
         if($items){
             return response()->json(['message' => 'Items have been listed successfully','items' => OrderResource::make($items)],200);
         }
-        return response()->json(['message' => 'The item could not be found'],404);
+        return ResponseHelper::forbidden();
     }
 }

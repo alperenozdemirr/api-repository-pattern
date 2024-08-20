@@ -8,9 +8,11 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ShoppingCart;
+use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\ShipmentStatus;
+use Illuminate\Support\Facades\Log;
 
 class OrderDetailRepository extends BaseRepository
 {
@@ -65,10 +67,11 @@ class OrderDetailRepository extends BaseRepository
      * @param $orderId
      * @return bool
      */
-    public function create($orderId)
+    public function createV2($orderId,$userId)
     {
         $this->validateExistenceId($orderId);
-        $baskets = ShoppingCart::where('user_id',Auth::user()->id)->get();
+        $user = User::find($userId);
+        $baskets = ShoppingCart::where('user_id',$user->id)->get();
         foreach ($baskets as $basket){
             $this->checkStock($basket->product_id,$basket->amount);
             $orderDetails[] = [
@@ -82,8 +85,8 @@ class OrderDetailRepository extends BaseRepository
             $save = $this->model->insert($orderDetails);
             if ($save) {
                 $order = Order::find($orderId);
-                ShoppingCart::where('user_id',Auth::user()->id)->delete();
-                $email = Auth::user()->email;
+                ShoppingCart::where('user_id',$user->id)->delete();
+                $email = $user->email;
                 $products = OrderDetail::where('order_id',$orderId)->with('products')->get();
                 $data['order_number'] = $orderId;
                 $data['time'] = $order->created_at;

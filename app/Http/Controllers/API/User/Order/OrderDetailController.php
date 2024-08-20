@@ -17,7 +17,7 @@ class OrderDetailController extends Controller
      * @param $orderId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function create($orderId)
+    /*public function create($orderId)
     {
         $item =  $this->repository->create($orderId);
         if($item){
@@ -25,5 +25,5 @@ class OrderDetailController extends Controller
         } else {
             return false;
         }
-    }
+    }*/
 }

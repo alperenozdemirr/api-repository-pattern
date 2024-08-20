@@ -21,6 +21,7 @@ class ProductResource extends JsonResource
             'category' => $this->category->name,
             'original_price' => $this->original_price,
             'discount_price' => $this->discount_price,
+            'favorite_count' => $this->favorites->count(),
             'stock' => $this->stock,
             'order' => $this->order ?? null, //highlight sorting
             'status' => $this->status,
