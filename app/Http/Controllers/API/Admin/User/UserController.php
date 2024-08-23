@@ -8,6 +8,8 @@ use App\Http\Repositories\Admin\UserRepository;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Http\Resources\Admin\UserResource;
 use App\Http\Services\FileService;
+use App\Jobs\UserDeleteJob;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -76,12 +78,9 @@ class UserController extends Controller
                     return ResponseHelper::failedDelete();
                 }
             }
-
-            $deleted = $user->delete();
-            if ($deleted) {
-                return response()->json(['message' => 'User and its image have been deleted'], 204);
-            } else return ResponseHelper::failedDelete();
-
+            dispatch(new UserDeleteJob($id));
+            //$deleted = $user->delete();
+            return response()->json(['message' => 'User deletion processed'], 204);
         } else {
             return ResponseHelper::forbidden();
         }

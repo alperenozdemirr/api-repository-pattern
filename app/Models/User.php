@@ -38,6 +38,10 @@ class User extends Authenticatable
             $user->baskets()->delete();
             $user->favorites()->delete();
             $user->comments()->delete();
+            foreach ($user->orders as $order){
+                $order->order_details()->delete();
+            }
+            $user->orders()->delete();
         });
     }
 
@@ -68,6 +72,11 @@ class User extends Authenticatable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class,'user_id','id');
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class,'user_id','id');
     }
 
 

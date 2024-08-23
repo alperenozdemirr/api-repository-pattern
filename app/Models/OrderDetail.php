@@ -16,9 +16,9 @@ class OrderDetail extends Model
     protected $guarded = [];
 
 
-    public function order(): HasOne
+    public function order(): BelongsTo
     {
-        return $this->hasOne(Order::class,'id','order_id');
+        return $this->belongsTo(Order::class,'order_id','id');
     }
 
     public function products(): BelongsTo
